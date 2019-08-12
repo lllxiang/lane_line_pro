@@ -79,6 +79,22 @@ namespace aps
                 std::vector<cv::Point>().swap(consensusSet);
             }
         }
+
+        //对局内点，求线段边界点
+        p_min.x = 1000; p_max.x = 0;
+        for(int i=0; i< mBestConsensusSet.size();i++)
+        {
+            if ( mBestConsensusSet[i].x > p_max.x)
+            {
+                p_max = mBestConsensusSet[i];
+            }
+            if (mBestConsensusSet[i].x < p_min.x)
+            {
+                p_min = mBestConsensusSet[i];
+            }
+        }
+
+
         return foundModel;
     }
 

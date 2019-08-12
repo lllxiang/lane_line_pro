@@ -174,7 +174,7 @@ int extrct_convex_points(std::vector<cv::Point> &src,std::vector<cv::Point> &dst
         bool has_inv_convex = 0;// 标志 是否有满足条件的凹缺陷
         for(int i=0;i < defects.size();++i) //遍历所有的凹缺陷
         {
-            std::cout<<"凹陷的距离="<<defects[i][3]/256 << std::endl;
+            //std::cout<<"凹陷的距离="<<defects[i][3]/256 << std::endl;
             if(defects[i][3]/256 > min_t)
             {
                 if(defects[i][0] < defects[i][1])
@@ -215,3 +215,101 @@ int extrct_convex_points(std::vector<cv::Point> &src,std::vector<cv::Point> &dst
         }
     }
 }
+
+int  ipm_points(std::vector<cv::Point> &src, std::vector<cv::Point> &dst)
+{
+    cv::Mat perspectiveMat(cv::Size(3, 3), CV_64FC1);
+    cv::Mat shifPerspectiveMat(cv::Size(3, 3), CV_64FC1);
+    const std::string perspectiveFileName = "/home/lx/data/suround_view_src_data/calibration/weishi/fish4/ipm_m.txt";
+    readPerspectiveParams(perspectiveFileName, perspectiveMat, shifPerspectiveMat);
+    std::vector<cv::Point2f> src_tmp,dst_tmp;
+    for(int i=0; i<src.size(); i++)
+    {
+        src_tmp.push_back(cv::Point2f(src[i].x,src[i].y));
+    }
+    cv::perspectiveTransform(src_tmp, dst_tmp, perspectiveMat);
+    for(int i=0; i<dst_tmp.size(); i++)
+    {
+        dst.push_back(cv::Point(dst_tmp[i].x,dst_tmp[i].y));
+    }
+    return 1;
+}
+
+int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid)
+{
+    double sub_k  = fabs(l1.mSlope - l2.mSlope);
+    if ( sub_k <  0.0001 )
+    {
+        l_mid.mSlope = (l1.mSlope + l2.mSlope) / 2.0;
+        l_mid.mIntercept = (l1.mIntercept + l2.mIntercept) / 2.0;
+    }
+    else
+    {
+        // 1 求交点
+        double x0 = (l2.mIntercept - l1.mIntercept)/(l1.mSlope - l2.mSlope);
+        double y0 = x0 * l1.mSlope + l1.mIntercept;
+        // 2.求斜率
+        double alpha1, alpha2, alpha3;
+        if (l1.mSlope > 0)
+        {
+            alpha1 = atan(l1.mSlope);
+        } else
+        {
+            alpha1 = 90 + fabs(atan(l1.mSlope));
+        }
+
+        if (l2.mSlope > 0)
+        {
+            alpha2 = atan(l2.mSlope);
+        } else
+        {
+            alpha2 = 90 + fabs(atan(l2.mSlope));
+        }
+
+        if(alpha1 > alpha2 > 0)
+        {
+            alpha3 = (alpha1 + alpha2)/2.0;
+        }
+        else
+         {
+             alpha3 = (alpha2 + alpha1)/2.0;
+        }
+
+        l_mid.mSlope = tan(alpha3);
+        l_mid.mIntercept = y0 - l_mid.mSlope * x0;
+    }
+    return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

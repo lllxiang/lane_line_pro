@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
-    <generated />
+    <generated>
+      <config projectName="dedistortion_imgs" targetName="dedistortion_imgs" />
+    </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -18,13 +20,17 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="684">
-              <caret line="38" column="72" selection-start-line="38" selection-start-column="72" selection-end-line="38" selection-end-column="72" />
+            <state relative-caret-position="420">
+              <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -52,9 +58,9 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="1512" />
-    <option name="y" value="301" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="1419" />
+    <option name="y" value="24" />
     <option name="width" value="2507" />
     <option name="height" value="1416" />
   </component>
@@ -70,11 +76,6 @@
             <path>
               <item name="dedistortion_imgs" type="b2602c69:ProjectViewProjectNode" />
               <item name="dedistortion_imgs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dedistortion_imgs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dedistortion_imgs" type="462c0819:PsiDirectoryNode" />
-              <item name="cmake-build-debug" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -100,8 +101,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Project" RUN_TARGET_NAME="dist_fish_eye" EXPLICIT_BUILD_TARGET_NAME="all" />
+  <component name="RunManager" selected="Application.dedistortion_imgs">
+    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="dedistortion_imgs" RUN_TARGET_NAME="dist_fish_eye" EXPLICIT_BUILD_TARGET_NAME="all" />
+    <configuration name="dedistortion_imgs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="dedistortion_imgs" TARGET_NAME="dedistortion_imgs" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="dedistortion_imgs" RUN_TARGET_NAME="dedistortion_imgs" />
+    <list>
+      <item itemvalue="Application.Build All" />
+      <item itemvalue="Application.dedistortion_imgs" />
+    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -120,33 +126,44 @@
       <workItem from="1565090766676" duration="24000" />
       <workItem from="1565267709325" duration="49000" />
       <workItem from="1565267770064" duration="581000" />
+      <workItem from="1565576244442" duration="945000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15951000" />
+    <option name="totallyTimeSpent" value="16896000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1512" y="301" width="2507" height="1416" extended-state="0" />
+    <frame x="1419" y="24" width="2507" height="1416" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.107487924" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="CMake" order="7" weight="0.1767442" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3296355" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.3423138" />
+      <window_info anchor="bottom" id="CMake" order="7" weight="0.17670365" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.31026617" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30982566" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.2860539" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.2860539" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3993994" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.34296578" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,6 +178,16 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="684">
+          <caret line="38" column="72" selection-start-line="38" selection-start-column="72" selection-end-line="38" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -220,8 +247,11 @@
     <entry file="file://$PROJECT_DIR$/src/标签预处理.cpp" />
     <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="38" column="72" selection-start-line="38" selection-start-column="72" selection-end-line="38" selection-end-column="72" />
+        <state relative-caret-position="420">
+          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -27,6 +27,8 @@ namespace aps
 
         double mSlope;
         double mIntercept;
+        std::vector<cv::Point>  p_toushi;      //透视图中点坐标
+        std::vector<cv::Point>  p_ipm;
     };
 
     class RansacLine2D
@@ -117,7 +119,8 @@ namespace aps
         double mThreshold;
     public:
         std::vector<cv::Point> m_notConsensusSet;  //保存 外点。
-
+        cv::Point p_min; //内点 x最小对应的点
+        cv::Point p_max; //内点集合 x最大对应的点
 
     };
 

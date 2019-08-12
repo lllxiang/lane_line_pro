@@ -31,7 +31,7 @@ int main(int argc, const char * argv[]) {
         }
 
         getCameraParams(cameraMatrix, dst_cameraMatrix,
-                        distCoeffs, "nt", 0.9, 0.9);
+                        distCoeffs, "ft", 0.9, 0.9); //left
         cv::fisheye::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
                                              dst_cameraMatrix, imageSize, CV_32FC1, map_x, map_y);
         cv::remap(frame, dst, map_x, map_y, cv::INTER_LINEAR);

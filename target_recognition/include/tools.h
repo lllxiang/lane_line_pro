@@ -28,6 +28,8 @@ struct super_rect //
 {
     aps::LineModel fit_line1; //RANSAC拟合的线
     aps::LineModel fit_line2; //RANSAC拟合的线
+    aps::LineModel fit_line_mid; //两条拟合线的角平分线
+
 
     cv::RotatedRect baseRect; //在baseRect的基础上增加若干属性
     float l_edge;  //矩形框的长边 长度
@@ -73,6 +75,12 @@ int contours_cluster(std::vector<std::vector<cv::Point>> &src,
 // 输入，输出分别为输入的轮廓(一个轮廓)，输出为凸轮廓点集(对应的一个凸轮廓点集)
 //在轮廓点中，根据凸包分析，将凸部分点集提取
 int extrct_convex_points(std::vector<cv::Point> &src,std::vector<cv::Point> &dst, int min_t);
+
+//稀疏逆透视变换
+int  ipm_points(std::vector<cv::Point> &src, std::vector<cv::Point> &dst);
+
+int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid);
+
 
 
 #endif //TARGET_RECOGNITION_TOOLS_H

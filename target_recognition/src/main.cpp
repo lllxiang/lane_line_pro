@@ -60,6 +60,7 @@ int main()
                     //读取相机参数
             read_cam_params(direction);
             //读取图片
+            std::cout<<"当前处理的图片路径："<<img_labeled_all_dir << std::endl;
             src_img = cv::imread(img_labeled_all_dir);
             src_pred = cv::imread(img_pred_all_dir,cv::IMREAD_GRAYSCALE);
             //提取目标类别
@@ -77,7 +78,7 @@ int main()
             ps_search.img_ps_mask = line_pred; //引导线
             ps_search.img_ps_mask_ipm = line_pred_ipm;
             ps_search.img_ps_bgr = src_img;
-
+            ps_search.img_ps_bgr_ipm = src_img_ipm;
             ps_search.detect(); //执行检测操作。
 
             ps_search.show();
@@ -485,12 +486,16 @@ int ipm_trans(std::string driection,int & type, cv::Mat & img_jpg, cv::Mat &warp
     if (type)
     {//矫正图
         cv::Mat m = cv::getPerspectiveTransform(distImgPoint, wordPoints2D);
+        std::cout<<"IPM变换矩阵m："<<m<<std::endl;
         cv::warpPerspective(img_jpg, warp, m, ipm_size);
     }
     else
     {
         cv::Mat m = cv::getPerspectiveTransform(distImgPoint, wordPoints2D);
+        std::cout<<"IPM变换矩阵m："<<m<<std::endl;
         cv::warpPerspective(img_dist, warp, m, ipm_size);
+        // cv::transform();
+
     }
     return 1;
 
