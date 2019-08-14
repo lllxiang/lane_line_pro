@@ -52,39 +52,39 @@ dirent.h
 ransac_line2d.h
 -
 
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ReadParams.cpp
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/ReadParams.cpp
 opencv2/opencv.hpp
 -
 fstream
 -
 ReadParams.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ReadParams.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/ReadParams.h
 
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_line_space.cpp
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_line_space.cpp
 detect_line_space.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_line_space.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_line_space.h
 
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_parking_space.cpp
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_parking_space.cpp
 detect_parking_space.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_parking_space.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_parking_space.h
 
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/main.cpp
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/main.cpp
 tools.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/tools.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/tools.h
 detect_parking_space.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_parking_space.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_parking_space.h
 detect_line_space.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_line_space.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_line_space.h
 computeWorldcoordWithZ.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/computeWorldcoordWithZ.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/computeWorldcoordWithZ.h
 
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ransac_line2d.cpp
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/ransac_line2d.cpp
 ransac_line2d.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ransac_line2d.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/ransac_line2d.h
 
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/tools.cpp
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/tools.cpp
 tools.h
-/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/tools.h
+/home/lx/CLionProjects/lane_line_pro/target_recognition/src/tools.h
 
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h

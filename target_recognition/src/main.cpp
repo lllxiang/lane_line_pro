@@ -38,7 +38,7 @@ int main()
     std::string img_labeled_all_dir, img_pred_all_dir;
     DIR* dir = opendir(img_labeled_dir.c_str());
     cv::Mat src_img,src_pred;
-    int nImg = 14;
+    int nImg = 1;
     while ((dirp = readdir(dir)) != NULL)
     {
         if (dirp->d_type == DT_REG)

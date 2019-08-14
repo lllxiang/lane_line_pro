@@ -74,24 +74,33 @@ void parking_space::show()
             cv::circle(img_ps_bgr_ipm, rects[i].fit_line2.p_ipm[1],3,cv::Scalar(0,0,255),1,8,0);
 
             //在透视图中画出最终的车位线
-
             for (int i=0; i<now_info.ps.size(); i++)
             {
                 cv::line(result,now_info.ps[i].sr1.fit_line_mid.p_toushi[0], now_info.ps[i].sr1.fit_line_mid.p_toushi[1],
-                        cv::Scalar(255,0,0), 2, 8, 0);
+                        cv::Scalar(255,0,0), 6, 8, 0);
                 cv::line(result,now_info.ps[i].sr2.fit_line_mid.p_toushi[0], now_info.ps[i].sr2.fit_line_mid.p_toushi[1],
-                         cv::Scalar(255,0,0), 2, 8, 0);
-                cv::circle(result, now_info.ps[i].sr1.fit_line_mid.p_toushi[0],4,cv::Scalar(0,255,0 ),1,8,0);
-                cv::circle(result, now_info.ps[i].sr2.fit_line_mid.p_toushi[0],4,cv::Scalar(0,255,0),1,8,0);
+                         cv::Scalar(255,0,0), 6, 8, 0);
+                cv::circle(result, now_info.ps[i].sr1.fit_line_mid.p_toushi[0],6,cv::Scalar(0,255,0 ),-1,8,0);
+                cv::circle(result, now_info.ps[i].sr2.fit_line_mid.p_toushi[0],6,cv::Scalar(0,255,0),-1,8,0);
             }
         }
+        cv::imshow("result", result);
+        cv::imshow("img_ps_mask", img_ps_mask);
+        cv::imshow("img_ps_mask_ipm", img_ps_mask_ipm);
+        cv::imshow("img_ps_bgr", img_ps_bgr);
+        cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
+        cv::waitKey(10);
     }
-    cv::imshow("result", result);
-    cv::imshow("img_ps_mask", img_ps_mask);
-    cv::imshow("img_ps_mask_ipm", img_ps_mask_ipm);
-    cv::imshow("img_ps_bgr", img_ps_bgr);
-    cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
-    cv::waitKey(0);
+    else
+    {
+        cv::imshow("result", result);
+        cv::imshow("img_ps_mask", img_ps_mask);
+        cv::imshow("img_ps_mask_ipm", img_ps_mask_ipm);
+        cv::imshow("img_ps_bgr", img_ps_bgr);
+        cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
+        cv::waitKey(30);
+    }
+
 }
 
 int parking_space::contours_filter()
@@ -188,14 +197,24 @@ int parking_space::detect()
         //只有当两条线都找到，且  两条线的斜率夹角满足一定条件  ，才转换至俯视图中。
         //rc 中两条线段的端点 转换至 ipm坐标系下
         // 对车位引导线进行较强的约束
-        if (isfound_line1 && isfound_line2)
+        //show();
+
+        //rc.fit_line1.mSlope
+        double alpha1 = tan(rc.fit_line1.mSlope);
+        double alpha2 = tan(rc.fit_line2.mSlope);
+        double para = abs(abs(alpha1) - abs(alpha2));
+
+        if (isfound_line1 && isfound_line2 )
         {
             //rc中 根据检测出的两条线求 角平分线。。只有在同时检测出两条线的时候调用
             solve_mid_line(rc.fit_line1, rc.fit_line2, rc.fit_line_mid);
-
+            if (abs(rc.fit_line_mid.mSlope) > 80)
+            {
+                break;
+            }
             //求 中间线段的端点
             bool is_start =  0;
-            for (int y0=480; y0>0; y0=y0-3  )
+            for (int y0=480; y0>0; y0=y0-3)
             {
                 double x0 = (y0 - rc.fit_line_mid.mIntercept) /rc.fit_line_mid.mSlope;
                 if (x0<0 || x0>640)
@@ -214,6 +233,15 @@ int parking_space::detect()
                     break;
                 }
             }
+            if (rc.fit_line_mid.p_toushi.size() == 0)
+            {
+                rc.fit_line_mid.p_toushi.push_back(cv::Point(int(0),0));
+                rc.fit_line_mid.p_toushi.push_back(cv::Point(int(0),0));
+            }
+            else if (rc.fit_line_mid.p_toushi.size() == 1)
+            {
+                rc.fit_line_mid.p_toushi.push_back( rc.fit_line_mid.p_toushi[0]);
+            }
             //将中间线段、两侧线段的端点坐标转移至 俯视图坐标系下
             ipm_points(rc.fit_line1.p_toushi, rc.fit_line1.p_ipm);
             ipm_points(rc.fit_line2.p_toushi, rc.fit_line2.p_ipm);
@@ -231,6 +259,11 @@ int parking_space::detect()
             //暂时假定找到车位
             now_info.is_has_ps = 1;
         }
+    }
+
+    if (now_info.ps.size()  == 0)
+    {
+        now_info.is_has_ps = 0;
     }
 
     return 1;
@@ -263,7 +296,7 @@ int parking_space::find_parking_space() {
                 start_dis = (rects[j].fit_line_mid.p_ipm[0].y -  rects[i].fit_line_mid.p_ipm[0].y);
 
                 printf("i = %d disptol=%f,para=%f, start_dis=%f \n",i,  disptol, para, start_dis);
-                if ((disptol > 110 && disptol < 180) && (para < 15) && (start_dis < 50))
+                if ((disptol > 100 && disptol < 130) && (para < 10) && (start_dis < 50))
                 {
                     parking_space_info tmp;
                     //将两条线信息->车位信息。

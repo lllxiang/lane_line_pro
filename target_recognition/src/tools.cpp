@@ -75,7 +75,7 @@ int contours_cluster(std::vector<std::vector<cv::Point>> &src,
         ct.push_back(h);
         for(int w=h+1; w<num; w++)
         {
-            if(score[h][w] < 20 )
+            if(score[h][w] < 10 )
             {
                 ct.push_back(w);
             }
@@ -221,7 +221,7 @@ int  ipm_points(std::vector<cv::Point> &src, std::vector<cv::Point> &dst)
     cv::Mat perspectiveMat(cv::Size(3, 3), CV_64FC1);
     cv::Mat shifPerspectiveMat(cv::Size(3, 3), CV_64FC1);
     const std::string perspectiveFileName = "/home/lx/data/suround_view_src_data/calibration/weishi/fish4/ipm_m.txt";
-    readPerspectiveParams(perspectiveFileName, perspectiveMat, shifPerspectiveMat);
+    readPerspectiveParams(perspectiveFileName, perspectiveMat);
     std::vector<cv::Point2f> src_tmp,dst_tmp;
     for(int i=0; i<src.size(); i++)
     {
@@ -250,11 +250,36 @@ int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid
         double y0 = x0 * l1.mSlope + l1.mIntercept;
         // 2.求斜率
         double alpha1, alpha2, alpha3;
-        alpha1 = atan(l1.mSlope);
-        alpha2 = atan(l2.mSlope);
+
+        if (l1.mSlope < 0)
+        {
+            alpha1 = 3.1415926 + atan(l1.mSlope);
+        }
+        else
+        {
+            alpha1 = atan(l1.mSlope);
+        }
+
+        if (l2.mSlope < 0)
+        {
+            alpha2 = 3.1415926 +   atan(l2.mSlope);
+        }
+        else
+        {
+            alpha2 = atan(l2.mSlope);
+        }
+
         alpha3 = (alpha1 + alpha2)/2.0;
         //kx+b方程
         l_mid.mSlope = tan(alpha3);
+        if (l_mid.mSlope > 480)
+        {
+            l_mid.mSlope = 80;
+        }
+        else if (l_mid.mSlope < -480)
+        {
+            l_mid.mSlope = -80;
+        }
         l_mid.mIntercept = y0 - l_mid.mSlope * x0;
     }
     return 1;

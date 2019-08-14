@@ -104,7 +104,7 @@ void readExtrinsic(const std::string extrinsicFileName, cv::Mat &rotation_vector
 
 }
 
-void readPerspectiveParams(const std::string perspectiveFileName, cv::Mat &perspectiveMat,cv::Mat &shifPerspectiveMat)
+void readPerspectiveParams(const std::string perspectiveFileName, cv::Mat &perspectiveMat)
 {
     //cv::Mat perspectiveMat(cv::Size(3, 3), CV_64FC1);
     std::ifstream in;
@@ -124,15 +124,15 @@ void readPerspectiveParams(const std::string perspectiveFileName, cv::Mat &persp
     in >> perspectiveMat.at<double>(2, 0);
     in >> perspectiveMat.at<double>(2, 1);
     in >> perspectiveMat.at<double>(2, 2);
-    in >> shifPerspectiveMat.at<double>(0, 0);
-    in >> shifPerspectiveMat.at<double>(0, 1);
-    in >> shifPerspectiveMat.at<double>(0, 2);
-    in >> shifPerspectiveMat.at<double>(1, 0);
-    in >> shifPerspectiveMat.at<double>(1, 1);
-    in >> shifPerspectiveMat.at<double>(1, 2);
-    in >> shifPerspectiveMat.at<double>(2, 0);
-    in >> shifPerspectiveMat.at<double>(2, 1);
-    in >> shifPerspectiveMat.at<double>(2, 2);
+//    in >> shifPerspectiveMat.at<double>(0, 0);
+//    in >> shifPerspectiveMat.at<double>(0, 1);
+//    in >> shifPerspectiveMat.at<double>(0, 2);
+//    in >> shifPerspectiveMat.at<double>(1, 0);
+//    in >> shifPerspectiveMat.at<double>(1, 1);
+//    in >> shifPerspectiveMat.at<double>(1, 2);
+//    in >> shifPerspectiveMat.at<double>(2, 0);
+//    in >> shifPerspectiveMat.at<double>(2, 1);
+//    in >> shifPerspectiveMat.at<double>(2, 2);
     in.close();
  }
 
