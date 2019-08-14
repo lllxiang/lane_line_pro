@@ -16,17 +16,13 @@ const double view_dis = 600.0; //可视距离 800cm
 //输入：方向标识，type,原图，
         //输出，IPM图
 int ipm_trans(std::string driection,int & type, cv::Mat & img_jpg, cv::Mat &warp);
-//威视相机外参为止情况下，通过手工选点，估计IPM m矩阵
-int ipm_trans_weishi(std::string driection,int & type, cv::Mat & img_jpg, cv::Mat &warp);
+
 bool get_mask_img(cv::Mat & src,cv::Mat &dst, int id);
+
 //原图坐标->去畸变图坐标
 bool src2dist(std::vector<cv::Point2f> &src, std::vector<cv::Point2f> &dst,
     cv::Mat & mapx, cv::Mat & mapy);
 bool read_cam_params(std::string &d);
-
-bool detect_line(cv::Mat & line_pred, std::vector<line_info> & lines);
-
-bool fit_one_line(std::vector<cv::Point> &c, line_info & lines);
 
 bool polynomial_curve_fit(std::vector<cv::Point>& key_point, int n, cv::Mat& A);
 int solve_super_rect(super_rect & sr);
@@ -64,13 +60,16 @@ int main()
             src_img = cv::imread(img_labeled_all_dir);
             src_pred = cv::imread(img_pred_all_dir,cv::IMREAD_GRAYSCALE);
             //提取目标类别
+                    //目前逐个目标处理，后期可在分割mask图上直接进行一次findcontours, 减少计算量
+
             cv::Mat line_pred = cv::Mat::zeros(src_pred.size(),src_pred.type());
             //IPM
             cv::Mat src_img_ipm,line_pred_ipm;
-            get_mask_img(src_pred,line_pred,6); //引导线
+            get_mask_img(src_pred,line_pred,6); //引导线 6
             int type = 1;
             ipm_trans(direction,type, line_pred, line_pred_ipm);
             ipm_trans(direction,type, src_img, src_img_ipm);
+
 
 
             //车位线检测--车位搜索
@@ -80,235 +79,22 @@ int main()
             ps_search.img_ps_bgr = src_img;
             ps_search.img_ps_bgr_ipm = src_img_ipm;
             ps_search.detect(); //执行检测操作。
+            if (ps_search.now_info.is_has_ps)
+            {
+                ps_search.show();
+            }
 
-            ps_search.show();
+//            //单白线检测
+//            detect_s_w_line s_w_line_search;
+//            s_w_line_search.img_ps_mask = line_pred; //引导线
+//            s_w_line_search.img_ps_mask_ipm = line_pred_ipm;
+//            s_w_line_search.img_ps_bgr = src_img;
+//            s_w_line_search.img_ps_bgr_ipm = src_img_ipm;
+//            if(s_w_line_search.detect())
+//            {
+//                s_w_line_search.show();
+//            }
 
-//
-//
-//
-//            double mins = 300; //最小像素轮廓
-//            parking_space_info tmp;
-//            std::vector<parking_space_info> parking_space; //一帧图像中所有的停车位
-//            //find contours
-//            std::vector<std::vector<cv::Point>> contours; //contours[0] is the first contours
-//            std::vector<std::vector<cv::Point>> contours_filtered;
-//            std::vector<cv::Vec4i> hierarchy;
-//            cv::findContours(line_pred, contours, hierarchy, cv::RETR_EXTERNAL,
-//                             cv::CHAIN_APPROX_NONE );
-//            printf("滤波前所有的轮廓 n=%d\n",(int)contours.size());
-//            for(int i=0;i<contours.size();i++) //对所有的轮廓
-//            {
-//                int s = cv::contourArea(contours[i]);
-//                int len = cv::arcLength(contours[i],1);
-//                if( s < mins)
-//                {
-//
-//                } else{
-//                    contours_filtered.push_back(contours[i]);
-//                    printf("s=%d\n",s);
-//                    printf("len=%d\n",len);
-//                }
-//            }
-//
-//
-//            //椭圆
-//            // 求轮廓的最小外接矩形,并求长短轴、主方向
-//            // std::vector<cv::RotatedRect> box(contours_filtered.size());
-//            std::vector<super_rect> box;
-//            printf("box.size()=%d\n", (int)box.size());
-//            cv::Mat paramsA;
-//            std::vector<cv::Point> points_fitted;
-//            for(int i=0;i<contours_filtered.size();i++)
-//            {
-//                super_rect tmp;
-//                tmp.baseRect = cv::minAreaRect(cv::Mat(contours_filtered[i]));
-//                solve_super_rect(tmp); //baseRect -> 长轴,短轴,长轴方向.
-//                box.push_back(tmp);
-//                printf("box.size()=%d\n", (int)box.size());
-//
-////                //外接椭圆
-////                cv::RotatedRect bcircle; cv::Point2f rect[4];
-////                bcircle = cv::fitEllipse(contours_filtered[i]);
-////                bcircle.points(rect);
-////
-////                cv::Point p1((rect[0].x + rect[3].x)/2,(rect[0].y + rect[3].y)/2);
-////                cv::Point p2((rect[1].x + rect[2].x)/2,(rect[1].y + rect[2].y)/2);
-////                cv::line(src_img_ipm, p1, p2, cv::Scalar(255, 0, 0), 1, 8);
-////
-////                cv::Point p3((rect[0].x + rect[1].x)/2,(rect[0].y + rect[1].y)/2);
-////                cv::Point p4((rect[2].x + rect[3].x)/2,(rect[2].y + rect[3].y)/2);
-////                cv::line(src_img_ipm, p3, p4, cv::Scalar(255, 0, 0), 1, 8);
-////
-////
-////                for(int j=0; j<4; j++)
-////                {
-////                    cv::line(src_img_ipm, rect[j], rect[(j+1)%4], cv::Scalar(0, 0, 255), 1, 8);  //绘制最小外接矩形每条边
-////                }
-////                //最小外接矩形
-////                bcircle = cv::minAreaRect(cv::Mat(contours_filtered[i]));
-////                bcircle.points(rect);
-////                for(int j=0; j<4; j++)
-////                {
-////                    cv::line(src_img_ipm, rect[j], rect[(j+1)%4], cv::Scalar(255, 0, 0), 1, 8);  //绘制最小外接矩形每条边
-////                }
-//
-//                //ransac 拟合直线
-////                aps::RansacLine2D ransac_lines;
-////                ransac_lines.setObservationSet(tu_contours);
-////                ransac_lines.setRequiredInliers(int(3));
-////                ransac_lines.setIterations(20);
-////                ransac_lines.setTreshold(3);
-////                double start = static_cast<double>(cvGetTickCount());
-////                ransac_lines.computeModel();
-////                double time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
-////                std::cout << "所用时间为:" << time/1000<<"ms"<<std::endl;
-////
-////                aps::LineModel fit_line;
-////                ransac_lines.getBestModel(fit_line);
-////                cv::line(src_img,cv::Point(0,0*fit_line.mSlope+fit_line.mIntercept),
-////                                 cv::Point(640,640*fit_line.mSlope+fit_line.mIntercept),cv::Scalar(0,0,255),2);
-////
-////
-////
-////                //polynomial_curve_fit(contours_filtered[i], 1, paramsA);
-////                cv::Vec4f fitline;
-////                //拟合方法采用最小二乘法
-////                // cv::fitLine(contours_filtered[i],fitline,CV_DIST_HUBER,0,0.001,0.001);
-////                double k_line = fitline[1]/fitline[0];
-////                //cv::Point p1(0,k_line*(0 - fitline[2]) + fitline[3]);
-////                //cv::Point p2(640 - 1,k_line*(640 - 1 - fitline[2]) + fitline[3]);
-////                //cv::line(src_img,p1,p2,cv::Scalar(0,0,255),2);
-////
-////
-//////                for (int x = 0; x < 640; x=x+5)
-//////                {
-//////                    double y = paramsA.at<double>(0,0) + paramsA.at<double>(0,1) * x +
-//////                               paramsA.at<double>(0,2)*std::pow(x, 2);
-//////                    points_fitted.push_back(cv::Point(x, y));
-//////                }
-////                //cv::polylines(src_img, points_fitted, false, cv::Scalar(255, 0, 0), 1, 8, 0); //蓝色 类型二
-//
-//
-//            }
-//
-//
-//
-//            //根据距离约束、平行度约束两个特征进行聚类。 每一个车位信息结构体
-//            // 包含两条线，代表一个车位存在的位置，
-//            // 孤立的引导线被删除
-//            int i=0; //考察第0个引导线
-//            double disptol=0, para=0;
-//            double start_dis = 0;
-//            printf("box.size()=%d\n",(int)box.size());
-//            if (box.size() > 1)
-//            {
-//                for(int j=0; j<box.size();j++)
-//                {
-//                    printf("j: l_edge_point: %d ,x= %d, y= %d \n", j, box[j].l_edge_point[0].x, box[j].l_edge_point[0].y);
-//                    for (int i = j+1; i < box.size(); i++)
-//                    {
-//                        //printf("i: l_edge_point: %d ,x= %d, y= %d \n", i, box[i].l_edge_point[0].x, box[i].l_edge_point[0].y);
-//                        //printf("index=%d, x=%d \n", i, box[i].l_edge_point[0].x);
-//                        disptol = getDist_P2L(cv::Point(box[j].baseRect.center), box[i].l_edge_point[0],
-//                                              box[i].l_edge_point[1]);
-//                        para = abs(box[j].l_edge_angle - box[i].l_edge_angle);
-//
-//                        //start_dis = calu_dis(box[j].l_edge_point[0], box[i].l_edge_point[0]);
-//
-//                        printf("i = %d disptol=%f,para=%f, start_dis=%f \n",i,  disptol, para, start_dis);
-//                        if ((disptol > 110 && disptol < 180) && (para < 30) && (start_dis < 200) )
-//                        {
-//                            //将两条线信息->车位信息。
-//                            //cv::line(src_img_ipm, )
-//                            cv::Scalar c = cv::Scalar(rand()%255, rand()%255, rand()%255);
-//                            //cv::line(src_img_ipm, box[i].l_edge_point[0], box[i].l_edge_point[1],c, 2, 8, 0);
-//                            //cv::line(src_img_ipm, box[j].l_edge_point[0], box[j].l_edge_point[1],c, 2, 8, 0);
-//                            tmp.sr1 = box[j];
-//                            tmp.sr2 = box[i];
-//                            parking_space.push_back(tmp);
-//                            //cv::imshow("src_img_ipm", src_img_ipm);
-//                            cv::waitKey(0);
-//                        }
-//                    }
-//                }
-//            }
-//            //聚类完成
-//            for (int i=0; i<parking_space.size();i++)
-//            {
-//                cv::line(src_img_ipm,parking_space[i].sr1.l_edge_point[0],parking_space[i].sr1.l_edge_point[1],cv::Scalar(255,255,0),1,8,0);
-//                cv::line(src_img_ipm,parking_space[i].sr1.l_edge_point[1],parking_space[i].sr2.l_edge_point[1],cv::Scalar(255,255,0),1,8,0);
-//                cv::line(src_img_ipm,parking_space[i].sr2.l_edge_point[1],parking_space[i].sr2.l_edge_point[0],cv::Scalar(255,255,0),1,8,0);
-//                cv::line(src_img_ipm,parking_space[i].sr2.l_edge_point[0],parking_space[i].sr1.l_edge_point[0],cv::Scalar(255,255,0),1,8,0);
-//            }
-//
-//
-//            //查看所有的外接矩形
-//            printf("滤波后所有的轮廓 n=%d\n",(int)contours_filtered.size());
-//            for(int i=0;i<box.size();i++) //对所有的轮廓
-//            {
-//                cv::Point2f rect[4];
-//                box[i].baseRect.points(rect);  //把最小外接矩形四个端点复制给rect数组
-//                for(int j=0; j<4; j++)
-//                {
-//                    //cv::line(src_img_ipm, rect[j], rect[(j+1)%4], cv::Scalar(0, 0, 255), 2, 8);  //绘制最小外接矩形每条边
-//                }
-//                //cv::line(src_img, box[i].l_edge_point[0], box[i].l_edge_point[1], cv::Scalar(255, 0, 0), 3, 8);
-//                printf("外接举行的角度n=%f,w=%f,h=%f\n", box[i].l_edge_angle,
-//                       box[i].s_edge,box[i].l_edge);
-//            }
-//
-//
-//            double dis = getDist_P2L(cv::Point(10,10), cv::Point(0,40), cv::Point(40,0));
-//            printf("dis = %f\n", dis);
-//
-////            //在原始图中检测直线
-////            std::vector<line_info> lines;
-////
-////            detect_line(line_pred, lines); //使用轮廓查找方式检测直线
-////
-////            if(lines.size() == 1)
-////            {
-////                cv::Mat params;
-////                std::vector<cv::Point> points_fitted;
-////                std::cout<<"lines[0].line_type"<<lines[0].line_type<<std::endl;
-////                if (lines[0].line_type == 1)
-////                {
-////                    params = lines[0].A1;
-////                    for (int x = lines[0].minp; x < lines[0].maxp; x++)
-////                    {
-////                        double y = params.at<double>(0,0) + params.at<double>(0,1) * x +
-////                                   params.at<double>(0,2)*std::pow(x, 2) + params.at<double>(0,3)*std::pow(x, 3)+
-////                                params.at<double>(0,4)*std::pow(x, 4) + params.at<double>(0,5)*std::pow(x, 5);
-////                        points_fitted.push_back(cv::Point(x, y));
-////                    }
-////                    cv::polylines(src_img, points_fitted, false, cv::Scalar(0, 0, 255), 1, 8, 0); //红色 类型一
-////                }
-////                else
-////                {
-////                    params = lines[0].A2;
-////                    for (int y = lines[0].minp; y < lines[0].maxp; y++)
-////                    {
-////                        double x = params.at<double>(0,0) + params.at<double>(0,1) * y +
-////                                   params.at<double>(0,2)*std::pow(y, 2) + params.at<double>(0,3)*std::pow(y, 3)
-////                                +params.at<double>(0,4)*std::pow(y, 4)+params.at<double>(0,5)*std::pow(y, 5);
-////                        points_fitted.push_back(cv::Point(x, y));
-////                    }
-////                    cv::polylines(src_img, points_fitted, false, cv::Scalar(255, 0, 0), 1, 8, 0); //蓝色 类型二
-////                }
-////            }
-//
-//            cv::imshow("src_img", src_img);
-//            //cv::imshow("src_pred", src_pred);
-//            cv::imshow("line_pred", line_pred);
-//            cv::imshow("src_img_ipm", src_img_ipm);
-//            //cv::imshow("line_pred_ipm", line_pred_ipm);
-//
-//
-//            cv::waitKey(0);
-//            //std::cout<<"img_labeled_all_dir"<<img_labeled_all_dir << std::endl;
-//            //std::cout<<"img_pred_all_dir"<<img_pred_all_dir << std::endl;
-//            //std::cout<<"numof_"<<numof_ << std::endl;
-//           // std::cout<<"d: "<<tname.substr(numof_ - 2 ,2) << std::endl;
 
         }
     }
@@ -381,20 +167,6 @@ bool src2dist(std::vector<cv::Point2f> &src, std::vector<cv::Point2f> &dst,
         dst.push_back(tmp);
     }
     return 1;
-}
-int ipm_trans_weishi(std::string driection,int & type, cv::Mat & img_jpg, cv::Mat &warp)
-{
-
-    std::vector<cv::Point2f> dst_dist; //俯视图 2D
-    std::vector<cv::Point2f> wordPoints;
-
-    //wordPoints.push_back(cv::Point2f());
-
-    cv::Mat m = cv::getPerspectiveTransform(dst_dist,wordPoints);
-    //cv::warpPerspective(img_jpg, warp, m, ipm_size);
-
-    return 1;
-
 }
 
 int ipm_trans(std::string driection,int & type, cv::Mat & img_jpg, cv::Mat &warp)
@@ -521,46 +293,7 @@ bool read_cam_params(std::string &d)
     return 1;
 }
 
-bool detect_line(cv::Mat & line_pred, std::vector<line_info> & lines)
-{
-    ///std::cout<<"detect_line"<<std::endl;
-    double min_s = 30; //面积阈值
-    //find contours
-    std::vector<std::vector<cv::Point>> contours; //contours[0] is the first contours
-    std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(line_pred, contours, hierarchy, cv::RETR_CCOMP,
-                     cv::CHAIN_APPROX_NONE);
 
-    if(contours.size() == 0)
-    {
-        //std::cout<<"No any line in image."<<std::endl;
-    }else if(contours.size() == 1) //只有一个轮廓，滤波后直接拟合
-    {
-        line_info one_line;
-        int c_s = cv::contourArea(contours[0]); //find contours
-        if (c_s > min_s)
-        {
-            //拟合.
-            //std::cout<<"is fitting..."<<std::endl;
-            //contours[0] ->  params.
-            cv::Mat A;
-            fit_one_line(contours[0], one_line);
-
-            //std::cout<< "A" << one_line.A1 << std::endl;
-            lines.push_back(one_line);
-        }
-        else
-        {
-            contours.pop_back();
-            //std::cout<<"No any line in image."<<std::endl;
-        }
-        //int cl = cv::arcLength(contours[0]); //calu contours length
-    } else  //轮廓大于一个，滤波->聚类后再拟合
-    {
-
-    }
-    return 1;
-}
 bool polynomial_curve_fit(std::vector<cv::Point>& key_point, int n, cv::Mat& A)
 {
     //Number of key points
@@ -596,87 +329,6 @@ bool polynomial_curve_fit(std::vector<cv::Point>& key_point, int n, cv::Mat& A)
     return true;
 }
 
-bool fit_one_line(std::vector<cv::Point> &c, line_info & lines)
-{
-    //输入 一组无序点集，分别拟合"X"型及"Y"型五次多项式曲线。
-    //并选取误差最小的一组参数，作为单白线的曲线参数返回。
-    std::vector<cv::Point> c2;
-    for(int i=0; i<c.size();i++)
-    {
-        c2.push_back(cv::Point(c[i].y, c[i].x));
-    }
-    cv::Mat A1, A2;
-    polynomial_curve_fit(c,5, A1); //X型拟合
-    polynomial_curve_fit(c2,5, A2); //Y型拟合
-    double s1=0, s2=0;
-    int xmin=2000, xmax=0;
-    int ymin=2000, ymax=0;
-    for(int i = 0; i<c.size();i+=2)
-    {
-        int x =c[i].x;
-        double y1 = A1.at<double>(0,0) + A1.at<double>(0,1) * x +
-                A1.at<double>(0,2)*std::pow(x, 2) + A1.at<double>(0,3)*std::pow(x, 3) +
-                                                    A1.at<double>(0,4)*std::pow(x, 4) +
-                                                    A1.at<double>(0,5)*std::pow(x, 5);
-        s1 = s1 + abs(y1 - c[i].y);
-        if(x<xmin)
-        { xmin=x; }
-        if(x>xmax)
-        { xmax=x; }
-    }
-    for(int i = 0; i<c2.size();i+=2)
-    {
-        int y =c[i].y;
-        double x = A2.at<double>(0,0) + A2.at<double>(0,1) * y +
-                    A2.at<double>(0,2)*std::pow(y, 2) + A2.at<double>(0,3)*std::pow(y, 3)
-                        +A2.at<double>(0,4)*std::pow(y, 4) + A2.at<double>(0,5)*std::pow(y, 5);
-        s2 = s2 + abs(x - c[i].x);
-        if(y<ymin)
-        { ymin=y; }
-        if(y>ymax)
-        { ymax=y; }
-    }
-    //std::cout<<"s1:"<<s1<<std::endl;
-    //std::cout<<"s2:"<<s2<<std::endl;
-    lines.A1 = A1;
-    lines.A2 = A2;
-    if(s1 < s2)
-    {
-        //X,同时查找端点并返回
-        lines.line_type = 1;
-        lines.minp = xmin;
-        lines.maxp = xmax;
-    } else
-    {
-        lines.line_type = 0;
-        lines.minp = ymin;
-        lines.maxp = ymax;
-    }
-    return 1;
-}
 
-int solve_super_rect(super_rect & sr)
-{
-    cv::Point2f rect[4];
-    sr.baseRect.points(rect);  //把最小外接矩形四个端点复制给rect数组
-
-    if(sr.baseRect.size.width < sr.baseRect.size.height)
-    {
-        sr.l_edge = sr.baseRect.size.height;
-        sr.s_edge = sr.baseRect.size.width;
-        sr.l_edge_angle = 90 - sr.baseRect.angle;
-        sr.l_edge_point.push_back(rect[0]);   sr.l_edge_point.push_back(rect[1]); //左下，左上
-        sr.l_edge_point.push_back(rect[2]);   sr.l_edge_point.push_back(rect[3]);
-    }
-    else
-    {
-        sr.s_edge = sr.baseRect.size.height;
-        sr.l_edge = sr.baseRect.size.width;
-        sr.l_edge_angle = -sr.baseRect.angle;
-        sr.l_edge_point.push_back(rect[1]);   sr.l_edge_point.push_back(rect[2]);
-        sr.l_edge_point.push_back(rect[3]);   sr.l_edge_point.push_back(rect[0]);
-    }
-    return 1;
-}
 
 

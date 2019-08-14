@@ -25,10 +25,13 @@ namespace aps
         {
         }
 
+        //透视图中的点斜式方程
         double mSlope;
         double mIntercept;
+
+        //两个端点
         std::vector<cv::Point>  p_toushi;      //透视图中点坐标
-        std::vector<cv::Point>  p_ipm;
+        std::vector<cv::Point>  p_ipm;    //俯视图中的点坐标
     };
 
     class RansacLine2D

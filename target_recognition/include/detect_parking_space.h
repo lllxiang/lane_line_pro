@@ -14,7 +14,7 @@ public:
     void show(); //可视化
 
     int contours_filter(); //滤波,透视图中，将小于一定值的轮廓去掉
-
+    int find_parking_space();
     int detect();
 
 
@@ -30,8 +30,9 @@ public:
     std::vector<std::vector<int>>  con_clusters; //聚类结果
 
 
-    ps_one_frame ps_now;
     std::vector<super_rect> rects; //所有检测出的超矩形
+
+    ps_one_frame now_info; //当前帧的所有车位线信息
 
 };
 

@@ -75,7 +75,7 @@ int contours_cluster(std::vector<std::vector<cv::Point>> &src,
         ct.push_back(h);
         for(int w=h+1; w<num; w++)
         {
-            if(score[h][w] < 30)
+            if(score[h][w] < 20 )
             {
                 ct.push_back(w);
             }
@@ -250,31 +250,10 @@ int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid
         double y0 = x0 * l1.mSlope + l1.mIntercept;
         // 2.求斜率
         double alpha1, alpha2, alpha3;
-        if (l1.mSlope > 0)
-        {
-            alpha1 = atan(l1.mSlope);
-        } else
-        {
-            alpha1 = 90 + fabs(atan(l1.mSlope));
-        }
-
-        if (l2.mSlope > 0)
-        {
-            alpha2 = atan(l2.mSlope);
-        } else
-        {
-            alpha2 = 90 + fabs(atan(l2.mSlope));
-        }
-
-        if(alpha1 > alpha2 > 0)
-        {
-            alpha3 = (alpha1 + alpha2)/2.0;
-        }
-        else
-         {
-             alpha3 = (alpha2 + alpha1)/2.0;
-        }
-
+        alpha1 = atan(l1.mSlope);
+        alpha2 = atan(l2.mSlope);
+        alpha3 = (alpha1 + alpha2)/2.0;
+        //kx+b方程
         l_mid.mSlope = tan(alpha3);
         l_mid.mIntercept = y0 - l_mid.mSlope * x0;
     }

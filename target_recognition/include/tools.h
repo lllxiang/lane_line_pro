@@ -13,9 +13,13 @@
 #include <ransac_line2d.h>
 
 
-struct line_info
+struct s_w_line_info
 {
     int line_type; //X型=1， Y=0
+    aps::LineModel fit_line1; //RANSAC拟合的线
+    aps::LineModel fit_line2; //RANSAC拟合的线
+
+
     int minp; //某个轴上的最小值
     int maxp;
     cv::Point left;
@@ -24,11 +28,22 @@ struct line_info
     cv::Mat A1; //多项式系数
     cv::Mat A2;
 };
-struct super_rect //
+struct line_now_info
+{
+    bool is_has_line; //是否含有s_w
+    std::vector<s_w_line_info> lines;
+};
+
+
+//一个潜在的车位引导线
+//用三条线段表示(边缘直线，中心直线的斜率方程及端点坐标)
+//
+struct super_rect
 {
     aps::LineModel fit_line1; //RANSAC拟合的线
     aps::LineModel fit_line2; //RANSAC拟合的线
     aps::LineModel fit_line_mid; //两条拟合线的角平分线
+    double alpha_line12; //line 1 和 line2之间的夹角
 
 
     cv::RotatedRect baseRect; //在baseRect的基础上增加若干属性
@@ -42,8 +57,9 @@ struct  parking_space_info
 {
     double e; //置信度
     int id; //考虑帧间跟踪，可能会用到
-    super_rect sr1; //车位引导线
-    super_rect sr2; //车位引导线2
+    super_rect sr1; //两个super_rect
+    super_rect sr2;
+
     std::vector<cv::Point> pts; //四个顶点坐标(IPM坐标系) -> 最终输出
 };
 struct  ps_one_frame
@@ -51,6 +67,10 @@ struct  ps_one_frame
     bool is_has_ps;
     std::vector<parking_space_info> ps;
 };
+
+
+
+
 
 //计算两点间距离
 double calu_dis_2point(cv::Point &p1, cv::Point &p2);

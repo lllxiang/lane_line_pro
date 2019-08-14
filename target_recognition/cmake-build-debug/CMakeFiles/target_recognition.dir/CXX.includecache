@@ -61,6 +61,8 @@ ReadParams.h
 /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ReadParams.h
 
 /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_line_space.cpp
+detect_line_space.h
+/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_line_space.h
 
 /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_parking_space.cpp
 detect_parking_space.h
