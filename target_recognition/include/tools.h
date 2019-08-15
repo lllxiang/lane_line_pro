@@ -12,7 +12,7 @@
 #include <dirent.h>
 #include <ransac_line2d.h>
 
-
+const  double pi = 3.141592653;
 struct s_w_line_info
 {
     int line_type; //X型=1， Y=0

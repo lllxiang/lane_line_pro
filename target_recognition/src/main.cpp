@@ -33,7 +33,7 @@ int main()
 {
 
     struct dirent *dirp;
-    std::string img_labeled_dir = "/home/lx/data/surround_line14_test/lednet/6left/6left-labeled/";
+    std::string img_labeled_dir = "/home/lx/data/surround_line14_test/lednet/6left/6left_img/";
     std::string img_pred_dir = "/home/lx/data/surround_line14_test/lednet/6left/6left-pred/";
     std::string img_labeled_all_dir, img_pred_all_dir;
     DIR* dir = opendir(img_labeled_dir.c_str());
@@ -79,10 +79,9 @@ int main()
             ps_search.img_ps_bgr = src_img;
             ps_search.img_ps_bgr_ipm = src_img_ipm;
             ps_search.detect(); //执行检测操作。
-            if (ps_search.now_info.is_has_ps)
-            {
-                ps_search.show();
-            }
+
+            ps_search.show();
+
 
 //            //单白线检测
 //            detect_s_w_line s_w_line_search;

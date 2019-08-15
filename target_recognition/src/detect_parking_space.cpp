@@ -33,7 +33,6 @@ void parking_space::show()
         }
 
         //显示拟合的直线
-
         for(int i=0;i<rects.size();i++)
         {
             //在透视图中显示拟合的直线
@@ -74,14 +73,15 @@ void parking_space::show()
             cv::circle(img_ps_bgr_ipm, rects[i].fit_line2.p_ipm[1],3,cv::Scalar(0,0,255),1,8,0);
 
             //在透视图中画出最终的车位线
+
             for (int i=0; i<now_info.ps.size(); i++)
             {
                 cv::line(result,now_info.ps[i].sr1.fit_line_mid.p_toushi[0], now_info.ps[i].sr1.fit_line_mid.p_toushi[1],
-                        cv::Scalar(255,0,0), 6, 8, 0);
+                        cv::Scalar(255,0,0), 2, 8, 0);
                 cv::line(result,now_info.ps[i].sr2.fit_line_mid.p_toushi[0], now_info.ps[i].sr2.fit_line_mid.p_toushi[1],
-                         cv::Scalar(255,0,0), 6, 8, 0);
-                cv::circle(result, now_info.ps[i].sr1.fit_line_mid.p_toushi[0],6,cv::Scalar(0,255,0 ),-1,8,0);
-                cv::circle(result, now_info.ps[i].sr2.fit_line_mid.p_toushi[0],6,cv::Scalar(0,255,0),-1,8,0);
+                         cv::Scalar(255,0,0), 2, 8, 0);
+                cv::circle(result, now_info.ps[i].sr1.fit_line_mid.p_toushi[0],7,cv::Scalar(0,255,0 ),-1,8,0);
+                cv::circle(result, now_info.ps[i].sr2.fit_line_mid.p_toushi[0],7,cv::Scalar(0,255,0),-1,8,0);
             }
         }
         cv::imshow("result", result);
@@ -89,7 +89,8 @@ void parking_space::show()
         cv::imshow("img_ps_mask_ipm", img_ps_mask_ipm);
         cv::imshow("img_ps_bgr", img_ps_bgr);
         cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
-        cv::waitKey(10);
+        cv::waitKey(20);
+        outputVideo << result;
     }
     else
     {
@@ -98,7 +99,8 @@ void parking_space::show()
         cv::imshow("img_ps_mask_ipm", img_ps_mask_ipm);
         cv::imshow("img_ps_bgr", img_ps_bgr);
         cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
-        cv::waitKey(30);
+        cv::waitKey(20);
+        outputVideo << result;
     }
 
 }
@@ -106,8 +108,12 @@ void parking_space::show()
 int parking_space::contours_filter()
 {
     std::vector<cv::Vec4i> hierarchy;
+    double start = static_cast<double>(cvGetTickCount());
     cv::findContours(img_ps_mask, contours, hierarchy, cv::RETR_EXTERNAL,
                      cv::CHAIN_APPROX_NONE );
+    double time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+    std::cout << "1->findContours及滤波耗时:" << time/1000<<"ms"<<std::endl;
+
     printf("滤波前所有的轮廓 n=%d\n",(int)contours.size());
     for(int i=0;i<contours.size();i++) //对所有的轮廓
     {
@@ -128,8 +134,12 @@ int parking_space::detect()
     //形态学-膨胀
     //获取 kernel的形状
     cv::Mat ds = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(9, 9),cv::Point(-1,-1));
+
+    double start = static_cast<double>(cvGetTickCount());
     cv::dilate(img_ps_mask, img_ps_mask, ds);
-    //dilate(src1, src2, ds);   //膨胀
+    double time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+    std::cout << "2->膨胀耗时:" << time/1000<<"ms"<<std::endl;
+
     //滤波
     if (!contours_filter())
     {
@@ -137,21 +147,28 @@ int parking_space::detect()
         now_info.is_has_ps = 0;
         return -1;
     }
-    cv::dilate(img_ps_mask, img_ps_mask, ds);
+
+    start = static_cast<double>(cvGetTickCount());
     contours_cluster(contours_filtered, con_clusters);
+    time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+    std::cout << "3->轮廓聚类耗时:" << time/1000<<"ms"<<std::endl;
+
     //凸轮廓查找
     std::vector<cv::Point> dst;
     for(int i=0; i<contours_filtered.size(); i++)
     {
+        start = static_cast<double>(cvGetTickCount());
         extrct_convex_points(contours_filtered[i], dst, 30);
+        time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+        std::cout << "4->凹性分析耗时:" << time/1000<<"ms"<<std::endl;
         contours_filtered_con.push_back(dst);
         dst.clear();
     }
 
     //RANSAC拟合//ransac 拟合直线
+    start = static_cast<double>(cvGetTickCount());
     for(int i=0;i<con_clusters.size();i++) //每一类
     {
-
         std::vector<cv::Point > pts;
         for(int j=0; j< con_clusters[i].size(); j++) //第i类的第j个轮廓
         {
@@ -161,12 +178,11 @@ int parking_space::detect()
                 pts.push_back(tc[m]);
             }
         }
-
         bool isfound_line2, isfound_line1;
         aps::RansacLine2D ransac_lines1;
         ransac_lines1.setObservationSet(pts);
-        ransac_lines1.setRequiredInliers(int(pts.size()/4));
-        ransac_lines1.setIterations(20);
+        ransac_lines1.setRequiredInliers(int(pts.size()/5));
+        ransac_lines1.setIterations(30);
         ransac_lines1.setTreshold(5);
         double start = static_cast<double>(cvGetTickCount());
         isfound_line1 = ransac_lines1.computeModel();
@@ -182,8 +198,8 @@ int parking_space::detect()
         {
             aps::RansacLine2D ransac_lines2;
             ransac_lines2.setObservationSet(ransac_lines1.m_notConsensusSet);
-            ransac_lines2.setRequiredInliers(int(pts.size()/4));
-            ransac_lines2.setIterations(20);
+            ransac_lines2.setRequiredInliers(int(pts.size()/5));
+            ransac_lines2.setIterations(30);
             ransac_lines2.setTreshold(5);
             start = static_cast<double>(cvGetTickCount());
             isfound_line2 = ransac_lines2.computeModel();
@@ -197,24 +213,14 @@ int parking_space::detect()
         //只有当两条线都找到，且  两条线的斜率夹角满足一定条件  ，才转换至俯视图中。
         //rc 中两条线段的端点 转换至 ipm坐标系下
         // 对车位引导线进行较强的约束
-        //show();
-
-        //rc.fit_line1.mSlope
-        double alpha1 = tan(rc.fit_line1.mSlope);
-        double alpha2 = tan(rc.fit_line2.mSlope);
-        double para = abs(abs(alpha1) - abs(alpha2));
-
-        if (isfound_line1 && isfound_line2 )
+        if (isfound_line1 && isfound_line2)
         {
             //rc中 根据检测出的两条线求 角平分线。。只有在同时检测出两条线的时候调用
             solve_mid_line(rc.fit_line1, rc.fit_line2, rc.fit_line_mid);
-            if (abs(rc.fit_line_mid.mSlope) > 80)
-            {
-                break;
-            }
+
             //求 中间线段的端点
             bool is_start =  0;
-            for (int y0=480; y0>0; y0=y0-3)
+            for (int y0=480; y0>0; y0=y0-1  )
             {
                 double x0 = (y0 - rc.fit_line_mid.mIntercept) /rc.fit_line_mid.mSlope;
                 if (x0<0 || x0>640)
@@ -247,23 +253,28 @@ int parking_space::detect()
             ipm_points(rc.fit_line2.p_toushi, rc.fit_line2.p_ipm);
             ipm_points(rc.fit_line_mid.p_toushi, rc.fit_line_mid.p_ipm);
             //求俯视图下 线段的斜率，与x轴正方向的夹角
-
-
-
+            rc.fit_line_mid.mSlope_ipm = (rc.fit_line_mid.p_ipm[1].y - rc.fit_line_mid.p_ipm[0].y) / (rc.fit_line_mid.p_ipm[1].x - rc.fit_line_mid.p_ipm[0].x + 1e-10);
+            rc.fit_line_mid.mIntercept_ipm = rc.fit_line_mid.p_ipm[0].y - rc.fit_line1.mSlope_ipm * rc.fit_line_mid.p_ipm[0].x;
+            rc.fit_line_mid.alpha_ipm = atan(rc.fit_line_mid.mSlope_ipm);
+            if (rc.fit_line_mid.alpha_ipm < 0)
+            {
+                rc.fit_line_mid.alpha_ipm = pi + rc.fit_line_mid.alpha_ipm;
+            }
             rects.push_back(rc); //rects 表示一帧图像中所有的超矩形。每个超举行由两条线段，中间线段原始组成
-
             //找完所有的超矩形，在俯视图中 对中间线段进行聚类。
             //输入为   std::vector<super_rect> rects; ,输出为 ps_one_frame now_info;
             find_parking_space();
-
-            //暂时假定找到车位
-            now_info.is_has_ps = 1;
         }
     }
-
-    if (now_info.ps.size()  == 0)
+    time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+    std::cout << "5->RANSAC直线拟合及车位查找耗时:" << time/1000<<"ms"<<std::endl;
+    if (now_info.ps.size() == 0)
     {
-        now_info.is_has_ps = 0;
+        now_info.is_has_ps = 1;
+    }
+    else
+    {
+        now_info.is_has_ps = now_info.ps.size();
     }
 
     return 1;
@@ -290,13 +301,14 @@ int parking_space::find_parking_space() {
                 //printf("index=%d, x=%d \n", i, box[i].l_edge_point[0].x);
                 disptol = getDist_P2L(rects[j].fit_line_mid.p_ipm[0], rects[i].fit_line_mid.p_ipm[0],
                                       rects[i].fit_line_mid.p_ipm[1]);
-                double alpha1 = tan(rects[j].fit_line_mid.mSlope);
-                double alpha2 = tan(rects[i].fit_line_mid.mSlope);
+                double alpha1 = rects[j].fit_line_mid.alpha_ipm;
+                double alpha2 = rects[i].fit_line_mid.alpha_ipm;
                 para = abs(abs(alpha1) - abs(alpha2));
+
                 start_dis = (rects[j].fit_line_mid.p_ipm[0].y -  rects[i].fit_line_mid.p_ipm[0].y);
 
                 printf("i = %d disptol=%f,para=%f, start_dis=%f \n",i,  disptol, para, start_dis);
-                if ((disptol > 100 && disptol < 130) && (para < 10) && (start_dis < 50))
+                if ((disptol > 110 && disptol < 150) && (para < 5) && (start_dis < 50))
                 {
                     parking_space_info tmp;
                     //将两条线信息->车位信息。
@@ -320,6 +332,14 @@ int parking_space::find_parking_space() {
     }
 }
 
+parking_space::parking_space() {
+    cv::Size sWH = cv::Size(640,480);
+    std::string outputVideoPath = "..\\test.avi";
+    outputVideo.open(outputVideoPath, CV_FOURCC('M', 'P', '4', '2'), 25.0, sWH);
+}
+parking_space::~parking_space() {
+    outputVideo.release();
+}
 
 
 

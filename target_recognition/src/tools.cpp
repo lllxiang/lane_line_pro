@@ -150,7 +150,7 @@ int extrct_convex_points(std::vector<cv::Point> &src,std::vector<cv::Point> &dst
     double start = static_cast<double>(cvGetTickCount());
     convexHull(src, hull, true);
     double time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
-    std::cout << "计算凸包:" << time/1000<<"ms"<< std::endl;
+    //std::cout << "计算凸包:" << time/1000<<"ms"<< std::endl;
 
     //判断是否有凸缺陷
     // 如果有凸缺陷就把它画出来
@@ -221,7 +221,7 @@ int  ipm_points(std::vector<cv::Point> &src, std::vector<cv::Point> &dst)
     cv::Mat perspectiveMat(cv::Size(3, 3), CV_64FC1);
     cv::Mat shifPerspectiveMat(cv::Size(3, 3), CV_64FC1);
     const std::string perspectiveFileName = "/home/lx/data/suround_view_src_data/calibration/weishi/fish4/ipm_m.txt";
-    readPerspectiveParams(perspectiveFileName, perspectiveMat);
+    readPerspectiveParams(perspectiveFileName, perspectiveMat, shifPerspectiveMat);
     std::vector<cv::Point2f> src_tmp,dst_tmp;
     for(int i=0; i<src.size(); i++)
     {
@@ -250,7 +250,6 @@ int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid
         double y0 = x0 * l1.mSlope + l1.mIntercept;
         // 2.求斜率
         double alpha1, alpha2, alpha3;
-
         if (l1.mSlope < 0)
         {
             alpha1 = 3.1415926 + atan(l1.mSlope);
@@ -268,7 +267,6 @@ int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid
         {
             alpha2 = atan(l2.mSlope);
         }
-
         alpha3 = (alpha1 + alpha2)/2.0;
         //kx+b方程
         l_mid.mSlope = tan(alpha3);

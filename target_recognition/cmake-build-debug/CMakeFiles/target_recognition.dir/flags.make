@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -std=c++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/lx/CLionProjects/lane_line_pro/target_recognition/include -isystem /usr/local/include -isystem /usr/local/include/opencv 
+CXX_INCLUDES = -I/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/include -isystem /usr/local/include -isystem /usr/local/include/opencv 
 

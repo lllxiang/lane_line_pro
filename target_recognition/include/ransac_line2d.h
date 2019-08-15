@@ -28,7 +28,12 @@ namespace aps
         //透视图中的点斜式方程
         double mSlope;
         double mIntercept;
+        //IPM中的点斜式方程
+        double mSlope_ipm;
+        double mIntercept_ipm;
 
+        double alpha;
+        double alpha_ipm; //直线与x轴正方向的夹角 0-180
         //两个端点
         std::vector<cv::Point>  p_toushi;      //透视图中点坐标
         std::vector<cv::Point>  p_ipm;    //俯视图中的点坐标

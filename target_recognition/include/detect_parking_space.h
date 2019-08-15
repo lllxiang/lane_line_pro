@@ -9,7 +9,8 @@
 class parking_space
 {
 public:
-    //parking_space();
+     parking_space();
+     ~parking_space();
 
     void show(); //可视化
 
@@ -33,6 +34,8 @@ public:
     std::vector<super_rect> rects; //所有检测出的超矩形
 
     ps_one_frame now_info; //当前帧的所有车位线信息
+
+    cv::VideoWriter outputVideo;
 
 };
 
