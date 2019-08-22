@@ -101,6 +101,7 @@ int  ipm_points(std::vector<cv::Point> &src, std::vector<cv::Point> &dst);
 
 int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid);
 
-
+//calu dis in 2 lines
+double calu_dis_2lines(cv::Vec4f & line1, cv::Vec4f & line2);
 
 #endif //TARGET_RECOGNITION_TOOLS_H

@@ -17,9 +17,13 @@ public:
     int contours_filter(); //滤波,透视图中，将小于一定值的轮廓去掉
     int find_parking_space();
     int detect();
+    int detect_test();
 
 
     cv::Mat img_ps_mask;  //0=bg, 255=车位引导线, ps=parking space..透视图
+
+    cv::Mat img_mask_canndy;
+
     cv::Mat img_ps_mask_ipm; //同上，俯视图
     cv::Mat img_ps_bgr; //透视图，原始图片
     cv::Mat img_ps_bgr_ipm; //俯视图，原始图片

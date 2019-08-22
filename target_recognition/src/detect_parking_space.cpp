@@ -7,6 +7,7 @@
 void parking_space::show()
 {
     cv::Mat result = img_ps_bgr.clone();
+    cv::Mat src = img_ps_bgr.clone();
 
     if(now_info.is_has_ps)
     {
@@ -84,23 +85,28 @@ void parking_space::show()
                 cv::circle(result, now_info.ps[i].sr2.fit_line_mid.p_toushi[0],7,cv::Scalar(0,255,0),-1,8,0);
             }
         }
+
+        outputVideo << result;
+        cv::imshow("src", src);
         cv::imshow("result", result);
         cv::imshow("img_ps_mask", img_ps_mask);
         cv::imshow("img_ps_mask_ipm", img_ps_mask_ipm);
         cv::imshow("img_ps_bgr", img_ps_bgr);
         cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
         cv::waitKey(20);
-        outputVideo << result;
+
     }
     else
     {
+        outputVideo << result;
+        cv::imshow("src", src);
         cv::imshow("result", result);
         cv::imshow("img_ps_mask", img_ps_mask);
         cv::imshow("img_ps_mask_ipm", img_ps_mask_ipm);
         cv::imshow("img_ps_bgr", img_ps_bgr);
         cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
         cv::waitKey(20);
-        outputVideo << result;
+
     }
 
 }
@@ -182,7 +188,7 @@ int parking_space::detect()
         aps::RansacLine2D ransac_lines1;
         ransac_lines1.setObservationSet(pts);
         ransac_lines1.setRequiredInliers(int(pts.size()/5));
-        ransac_lines1.setIterations(30);
+        ransac_lines1.setIterations(20);
         ransac_lines1.setTreshold(5);
         double start = static_cast<double>(cvGetTickCount());
         isfound_line1 = ransac_lines1.computeModel();
@@ -199,7 +205,7 @@ int parking_space::detect()
             aps::RansacLine2D ransac_lines2;
             ransac_lines2.setObservationSet(ransac_lines1.m_notConsensusSet);
             ransac_lines2.setRequiredInliers(int(pts.size()/5));
-            ransac_lines2.setIterations(30);
+            ransac_lines2.setIterations(20);
             ransac_lines2.setTreshold(5);
             start = static_cast<double>(cvGetTickCount());
             isfound_line2 = ransac_lines2.computeModel();
@@ -254,7 +260,8 @@ int parking_space::detect()
             ipm_points(rc.fit_line_mid.p_toushi, rc.fit_line_mid.p_ipm);
             //求俯视图下 线段的斜率，与x轴正方向的夹角
             rc.fit_line_mid.mSlope_ipm = (rc.fit_line_mid.p_ipm[1].y - rc.fit_line_mid.p_ipm[0].y) / (rc.fit_line_mid.p_ipm[1].x - rc.fit_line_mid.p_ipm[0].x + 1e-10);
-            rc.fit_line_mid.mIntercept_ipm = rc.fit_line_mid.p_ipm[0].y - rc.fit_line1.mSlope_ipm * rc.fit_line_mid.p_ipm[0].x;
+            rc.fit_line_mid.mIntercept_ipm = rc.fit_line_mid.p_ipm[0].y - rc.fit_line_mid.mSlope_ipm * rc.fit_line_mid.p_ipm[0].x;
+
             rc.fit_line_mid.alpha_ipm = atan(rc.fit_line_mid.mSlope_ipm);
             if (rc.fit_line_mid.alpha_ipm < 0)
             {
@@ -275,10 +282,106 @@ int parking_space::detect()
     else
     {
         now_info.is_has_ps = now_info.ps.size();
+        //after find parking space, find p_t length.
+        for(int i=0; i< now_info.ps.size();i++)
+        {
+            cv::Point pt_s, pt_e;
+            pt_s = now_info.ps[i].sr1.fit_line_mid.p_ipm[0];
+            for(int y = now_info.ps[i].sr1.fit_line_mid.p_ipm[0].y; y>0; y--)
+            {
+                double x = (y - now_info.ps[i].sr1.fit_line_mid.mIntercept_ipm) / (now_info.ps[i].sr1.fit_line_mid.mSlope_ipm + 1e-10);
+                pt_e = cv::Point(int(x),y);
+                double dis  = calu_dis_2point(pt_s, pt_e);
+                if (dis > 100)
+                {
+                    now_info.ps[i].sr1.fit_line_mid.p_ipm[0] = pt_s;
+                    now_info.ps[i].sr1.fit_line_mid.p_ipm[1] = pt_e;
+                    break;
+                }
+            }
+        }
     }
 
     return 1;
 }
+
+
+int parking_space::detect_test() {
+
+    cv::Mat img_t = cv::Mat::zeros(img_ps_mask_ipm.size(), CV_8UC1);
+    std::vector<cv::Vec4i> hierarchy;
+    double start = static_cast<double>(cvGetTickCount());
+    cv::findContours(img_ps_mask_ipm, contours, hierarchy, cv::RETR_EXTERNAL,
+                     cv::CHAIN_APPROX_NONE );
+    double time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+    std::cout << "1->findContours及滤波耗时:" << time/1000<<"ms"<<std::endl;
+
+    for (int i=0;i<contours.size();i++)
+    {
+        for(int j=0; j<contours[i].size();j++)
+        {
+            img_t.at<uchar>(contours[i][j].y, contours[i][j].x) = 255;
+        }
+    }
+
+    printf("滤波前所有的轮廓 n=%d\n",(int)contours.size());
+
+
+
+    cv::Canny(img_ps_mask_ipm, img_mask_canndy, 0.1,0.5); //0.8-1.1ms
+
+    std::vector<cv::Vec4f> plines;
+    //Hough直线检测API
+     start = static_cast<double>(cvGetTickCount());
+     cv::HoughLinesP(img_t, plines, 1, CV_PI / 180, 30, 40, 5);
+     time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+    std::cout << "1->hough边缘检测耗时:" << time/1000<<"ms"<<std::endl;
+
+    //标记出直线pinxiecuowu
+    for (size_t i = 0; i < plines.size(); i++)
+    {
+        cv::Vec4f point1 = plines[i];
+        if (point1[0] == point1[2])
+        {
+            cv::circle(img_ps_bgr_ipm,cv::Point(point1[0], point1[1]),2,cv::Scalar(0,0,255),1,8,0 );
+            cv::circle(img_ps_bgr_ipm,cv::Point(point1[2], point1[3]),2,cv::Scalar(0,255,0),1,8,0 );
+        }
+
+        line(img_ps_bgr_ipm, cv::Point(point1[0], point1[1]), cv::Point(point1[2], point1[3]), cv::Scalar(rand()%255, rand()%255, rand()%255), 1, cv::LINE_AA);
+    }
+    //输入plines, 输出plines_combined
+    std::vector<cv::Vec4f> plines_combined;
+    int class_nums[plines.size()] = {10000,};
+    int class_now = 0;
+    for(int i=0; i<plines.size(); ++i)
+    {
+        if (class_nums[i] < 1000)
+        {
+            class_nums[i] = class_now;
+        }
+        for (int j=0; j<plines.size();j++)
+        {
+            if(calu_dis_2lines(plines[i], plines[j]) < 3) //6cm
+            {
+                class_nums[j] = class_now;
+            }
+        }
+        class_now++;
+    }
+
+
+
+
+    cv::imshow("img_t", img_t);
+    cv::imshow("img_ps_mask", img_ps_mask);
+    cv::imshow("img_ps_bgr", img_ps_bgr);
+    cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
+
+    cv::imshow("img_mask_canndy", img_mask_canndy);
+    cv::waitKey(0);
+}
+
+
 
 int parking_space::find_parking_space() {
     //输入为   std::vector<super_rect> rects; ,输出为 ps_one_frame now_info;
@@ -334,7 +437,7 @@ int parking_space::find_parking_space() {
 
 parking_space::parking_space() {
     cv::Size sWH = cv::Size(640,480);
-    std::string outputVideoPath = "..\\test.avi";
+    std::string outputVideoPath = "../test.avi";
     outputVideo.open(outputVideoPath, CV_FOURCC('M', 'P', '4', '2'), 25.0, sWH);
 }
 parking_space::~parking_space() {

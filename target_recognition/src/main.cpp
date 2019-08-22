@@ -11,7 +11,7 @@
 const double car_len = 500.5;    //自车长
 const double car_weight = 193.2; //车宽
 const double car_zhouju = 187.5;
-const double view_dis = 600.0; //可视距离 800cm
+const double view_dis = 500.0; //可视距离 800cm
 
 //输入：方向标识，type,原图，
         //输出，IPM图
@@ -78,9 +78,10 @@ int main()
             ps_search.img_ps_mask_ipm = line_pred_ipm;
             ps_search.img_ps_bgr = src_img;
             ps_search.img_ps_bgr_ipm = src_img_ipm;
-            ps_search.detect(); //执行检测操作。
+            //ps_search.detect(); //执行检测操作。
+            //ps_search.show();
+            ps_search.detect_test();
 
-            ps_search.show();
 
 
 //            //单白线检测

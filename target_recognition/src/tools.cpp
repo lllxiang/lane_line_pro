@@ -283,7 +283,12 @@ int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid
     return 1;
 }
 
-
+double calu_dis_2lines(cv::Vec4f & line1, cv::Vec4f & line2)
+{
+    double atob = getDist_P2L(cv::Point(line1[0], line1[1]), cv::Point(line2[0], line2[1]), cv::Point(line2[2], line2[3]));
+    double btoa = getDist_P2L(cv::Point(line2[0], line2[1]), cv::Point(line1[0], line1[1]), cv::Point(line1[2], line1[3]));
+    return (atob+btoa)/2;
+}
 
 
 
