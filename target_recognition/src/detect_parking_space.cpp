@@ -307,7 +307,11 @@ int parking_space::detect()
 
 
 int parking_space::detect_test() {
-
+    std::vector<cv::Scalar> cmap;
+    for(int i=0;i<30;i++)
+    {
+        cmap.push_back(cv::Scalar(rand()%255, rand()%255, rand()%255));
+    }
     cv::Mat img_t = cv::Mat::zeros(img_ps_mask_ipm.size(), CV_8UC1);
     std::vector<cv::Vec4i> hierarchy;
     double start = static_cast<double>(cvGetTickCount());
@@ -337,7 +341,7 @@ int parking_space::detect_test() {
      time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
     std::cout << "1->hough边缘检测耗时:" << time/1000<<"ms"<<std::endl;
 
-    //标记出直线pinxiecuowu
+    //标记出直线
     for (size_t i = 0; i < plines.size(); i++)
     {
         cv::Vec4f point1 = plines[i];
@@ -350,27 +354,42 @@ int parking_space::detect_test() {
         line(img_ps_bgr_ipm, cv::Point(point1[0], point1[1]), cv::Point(point1[2], point1[3]), cv::Scalar(rand()%255, rand()%255, rand()%255), 1, cv::LINE_AA);
     }
     //输入plines, 输出plines_combined
+    start = static_cast<double>(cvGetTickCount());
+
     std::vector<cv::Vec4f> plines_combined;
-    int class_nums[plines.size()] = {10000,};
+    int class_nums[plines.size()];
+    for(int i=0; i<plines.size();++i)
+    {
+        class_nums[i]=10000;
+    }
     int class_now = 0;
     for(int i=0; i<plines.size(); ++i)
     {
-        if (class_nums[i] < 1000)
+        if (class_nums[i] > 1000) //not clustered
         {
             class_nums[i] = class_now;
         }
+        else
+        {
+            continue;
+        }
         for (int j=0; j<plines.size();j++)
         {
-            if(calu_dis_2lines(plines[i], plines[j]) < 3) //6cm
+            if(calu_dis_2lines(plines[i], plines[j]) < 6) //6cm
             {
                 class_nums[j] = class_now;
             }
         }
         class_now++;
     }
+    time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+    std::cout << "2->plines_combined聚类耗时:" << time/1000<<"ms"<<std::endl;
 
-
-
+    for(int i=0; i<plines.size();i++)
+    {
+        cv::Vec4f point1 = plines[i];
+        line(img_ps_bgr_ipm, cv::Point(point1[0], point1[1]), cv::Point(point1[2], point1[3]), cmap[class_nums[i]], 2, cv::LINE_AA);
+    }
 
     cv::imshow("img_t", img_t);
     cv::imshow("img_ps_mask", img_ps_mask);

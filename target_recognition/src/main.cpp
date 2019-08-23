@@ -33,12 +33,12 @@ int main()
 {
 
     struct dirent *dirp;
-    std::string img_labeled_dir = "/home/lx/data/surround_line14_test/lednet/6left/6left_img/";
-    std::string img_pred_dir = "/home/lx/data/surround_line14_test/lednet/6left/6left-pred/";
+    std::string img_labeled_dir = "/home/lx/data/surround_line14_test/lednet/all_left/all-left-img/";
+    std::string img_pred_dir = "/home/lx/data/surround_line14_test/lednet/all_left/all-left-pred/";
     std::string img_labeled_all_dir, img_pred_all_dir;
     DIR* dir = opendir(img_labeled_dir.c_str());
     cv::Mat src_img,src_pred;
-    int nImg = 1;
+    int nImg = 1014;
     while ((dirp = readdir(dir)) != NULL)
     {
         if (dirp->d_type == DT_REG)
@@ -49,8 +49,8 @@ int main()
             //img_labeled_all_dir = img_labeled_dir + tname;
             // img_pred_all_dir = img_pred_dir + tname.substr(0,numof)+".png";
             //std::string direction = tname.substr(numof_ - 2 ,2);
-            img_labeled_all_dir = img_labeled_dir + "im_" + std::to_string(nImg) + ".jpg";
-            img_pred_all_dir = img_pred_dir + "im_" + std::to_string(nImg) + ".png";
+            img_labeled_all_dir = img_labeled_dir + "4left_" + std::to_string(nImg) + ".jpg";
+            img_pred_all_dir = img_pred_dir + "4left_" + std::to_string(nImg) + ".png";
             std::string direction = "ft";
             nImg++;
                     //读取相机参数
@@ -242,9 +242,9 @@ int ipm_trans(std::string driection,int & type, cv::Mat & img_jpg, cv::Mat &warp
         if(driection == "ft")
         {
             //left
-            wordPoints2D[i].x = (wordPoints2D[i].x + (view_dis + (car_len-car_zhouju)/2 + 106))/2;
-            wordPoints2D[i].y = (wordPoints2D[i].y + (view_dis - 103))/2;
-            ipm_size = cv::Size((view_dis*2 + car_len)/2,  (view_dis+car_weight/2)/2);
+            wordPoints2D[i].x = (wordPoints2D[i].x + (view_dis + (car_len-car_zhouju)/2 + 106))/1;
+            wordPoints2D[i].y = (wordPoints2D[i].y + (view_dis - 103))/1;
+            ipm_size = cv::Size((view_dis*2 + car_len)/1,  (view_dis+car_weight/2)/1);
         }
         else if (driection == "ar")
         {
