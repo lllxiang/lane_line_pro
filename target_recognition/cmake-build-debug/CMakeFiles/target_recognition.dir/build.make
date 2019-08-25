@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lx/CLionProjects/lane_line_postprocessing/target_recognition
+CMAKE_SOURCE_DIR = /home/lx/CLionProjects/lane_line_pro/target_recognition
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug
+CMAKE_BINARY_DIR = /home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/target_recognition.dir/depend.make
@@ -57,42 +57,18 @@ include CMakeFiles/target_recognition.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/target_recognition.dir/flags.make
 
-CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o: CMakeFiles/target_recognition.dir/flags.make
-CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o: ../src/ReadParams.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o -c /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ReadParams.cpp
-
-CMakeFiles/target_recognition.dir/src/ReadParams.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/ReadParams.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ReadParams.cpp > CMakeFiles/target_recognition.dir/src/ReadParams.cpp.i
-
-CMakeFiles/target_recognition.dir/src/ReadParams.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/ReadParams.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ReadParams.cpp -o CMakeFiles/target_recognition.dir/src/ReadParams.cpp.s
-
-CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.requires:
-
-.PHONY : CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.requires
-
-CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.provides: CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.requires
-	$(MAKE) -f CMakeFiles/target_recognition.dir/build.make CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.provides.build
-.PHONY : CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.provides
-
-CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.provides.build: CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o
-
-
 CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o: CMakeFiles/target_recognition.dir/flags.make
 CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o: ../src/ransac_line2d.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o -c /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ransac_line2d.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o -c /home/lx/CLionProjects/lane_line_pro/target_recognition/src/ransac_line2d.cpp
 
 CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ransac_line2d.cpp > CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_pro/target_recognition/src/ransac_line2d.cpp > CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.i
 
 CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/ransac_line2d.cpp -o CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_pro/target_recognition/src/ransac_line2d.cpp -o CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.s
 
 CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o.requires:
 
@@ -105,66 +81,42 @@ CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o.provides: CMakeFiles/t
 CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o.provides.build: CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o
 
 
-CMakeFiles/target_recognition.dir/src/main.cpp.o: CMakeFiles/target_recognition.dir/flags.make
-CMakeFiles/target_recognition.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/target_recognition.dir/src/main.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/main.cpp.o -c /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/main.cpp
+CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o: CMakeFiles/target_recognition.dir/flags.make
+CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o: ../src/ReadParams.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o -c /home/lx/CLionProjects/lane_line_pro/target_recognition/src/ReadParams.cpp
 
-CMakeFiles/target_recognition.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/main.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/main.cpp > CMakeFiles/target_recognition.dir/src/main.cpp.i
+CMakeFiles/target_recognition.dir/src/ReadParams.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/ReadParams.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_pro/target_recognition/src/ReadParams.cpp > CMakeFiles/target_recognition.dir/src/ReadParams.cpp.i
 
-CMakeFiles/target_recognition.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/main.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/main.cpp -o CMakeFiles/target_recognition.dir/src/main.cpp.s
+CMakeFiles/target_recognition.dir/src/ReadParams.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/ReadParams.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_pro/target_recognition/src/ReadParams.cpp -o CMakeFiles/target_recognition.dir/src/ReadParams.cpp.s
 
-CMakeFiles/target_recognition.dir/src/main.cpp.o.requires:
+CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.requires:
 
-.PHONY : CMakeFiles/target_recognition.dir/src/main.cpp.o.requires
+.PHONY : CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.requires
 
-CMakeFiles/target_recognition.dir/src/main.cpp.o.provides: CMakeFiles/target_recognition.dir/src/main.cpp.o.requires
-	$(MAKE) -f CMakeFiles/target_recognition.dir/build.make CMakeFiles/target_recognition.dir/src/main.cpp.o.provides.build
-.PHONY : CMakeFiles/target_recognition.dir/src/main.cpp.o.provides
+CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.provides: CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.requires
+	$(MAKE) -f CMakeFiles/target_recognition.dir/build.make CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.provides.build
+.PHONY : CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.provides
 
-CMakeFiles/target_recognition.dir/src/main.cpp.o.provides.build: CMakeFiles/target_recognition.dir/src/main.cpp.o
-
-
-CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o: CMakeFiles/target_recognition.dir/flags.make
-CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o: ../src/detect_parking_space.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o -c /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_parking_space.cpp
-
-CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_parking_space.cpp > CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.i
-
-CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_parking_space.cpp -o CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.s
-
-CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.requires:
-
-.PHONY : CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.requires
-
-CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.provides: CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.requires
-	$(MAKE) -f CMakeFiles/target_recognition.dir/build.make CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.provides.build
-.PHONY : CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.provides
-
-CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.provides.build: CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o
+CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.provides.build: CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o
 
 
 CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o: CMakeFiles/target_recognition.dir/flags.make
 CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o: ../src/detect_line_space.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o -c /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_line_space.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o -c /home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_line_space.cpp
 
 CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_line_space.cpp > CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_line_space.cpp > CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.i
 
 CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/detect_line_space.cpp -o CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_line_space.cpp -o CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.s
 
 CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o.requires:
 
@@ -177,18 +129,66 @@ CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o.provides: CMakeFil
 CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o.provides.build: CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o
 
 
+CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o: CMakeFiles/target_recognition.dir/flags.make
+CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o: ../src/detect_parking_space.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o -c /home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_parking_space.cpp
+
+CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_parking_space.cpp > CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.i
+
+CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_pro/target_recognition/src/detect_parking_space.cpp -o CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.s
+
+CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.requires:
+
+.PHONY : CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.requires
+
+CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.provides: CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.requires
+	$(MAKE) -f CMakeFiles/target_recognition.dir/build.make CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.provides.build
+.PHONY : CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.provides
+
+CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.provides.build: CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o
+
+
+CMakeFiles/target_recognition.dir/src/main.cpp.o: CMakeFiles/target_recognition.dir/flags.make
+CMakeFiles/target_recognition.dir/src/main.cpp.o: ../src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/target_recognition.dir/src/main.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/main.cpp.o -c /home/lx/CLionProjects/lane_line_pro/target_recognition/src/main.cpp
+
+CMakeFiles/target_recognition.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/main.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_pro/target_recognition/src/main.cpp > CMakeFiles/target_recognition.dir/src/main.cpp.i
+
+CMakeFiles/target_recognition.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/main.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_pro/target_recognition/src/main.cpp -o CMakeFiles/target_recognition.dir/src/main.cpp.s
+
+CMakeFiles/target_recognition.dir/src/main.cpp.o.requires:
+
+.PHONY : CMakeFiles/target_recognition.dir/src/main.cpp.o.requires
+
+CMakeFiles/target_recognition.dir/src/main.cpp.o.provides: CMakeFiles/target_recognition.dir/src/main.cpp.o.requires
+	$(MAKE) -f CMakeFiles/target_recognition.dir/build.make CMakeFiles/target_recognition.dir/src/main.cpp.o.provides.build
+.PHONY : CMakeFiles/target_recognition.dir/src/main.cpp.o.provides
+
+CMakeFiles/target_recognition.dir/src/main.cpp.o.provides.build: CMakeFiles/target_recognition.dir/src/main.cpp.o
+
+
 CMakeFiles/target_recognition.dir/src/tools.cpp.o: CMakeFiles/target_recognition.dir/flags.make
 CMakeFiles/target_recognition.dir/src/tools.cpp.o: ../src/tools.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/target_recognition.dir/src/tools.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/tools.cpp.o -c /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/tools.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/target_recognition.dir/src/tools.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/target_recognition.dir/src/tools.cpp.o -c /home/lx/CLionProjects/lane_line_pro/target_recognition/src/tools.cpp
 
 CMakeFiles/target_recognition.dir/src/tools.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/target_recognition.dir/src/tools.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/tools.cpp > CMakeFiles/target_recognition.dir/src/tools.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lx/CLionProjects/lane_line_pro/target_recognition/src/tools.cpp > CMakeFiles/target_recognition.dir/src/tools.cpp.i
 
 CMakeFiles/target_recognition.dir/src/tools.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/target_recognition.dir/src/tools.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/src/tools.cpp -o CMakeFiles/target_recognition.dir/src/tools.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lx/CLionProjects/lane_line_pro/target_recognition/src/tools.cpp -o CMakeFiles/target_recognition.dir/src/tools.cpp.s
 
 CMakeFiles/target_recognition.dir/src/tools.cpp.o.requires:
 
@@ -203,21 +203,21 @@ CMakeFiles/target_recognition.dir/src/tools.cpp.o.provides.build: CMakeFiles/tar
 
 # Object files for target target_recognition
 target_recognition_OBJECTS = \
-"CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o" \
 "CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o" \
-"CMakeFiles/target_recognition.dir/src/main.cpp.o" \
-"CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o" \
+"CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o" \
 "CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o" \
+"CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o" \
+"CMakeFiles/target_recognition.dir/src/main.cpp.o" \
 "CMakeFiles/target_recognition.dir/src/tools.cpp.o"
 
 # External object files for target target_recognition
 target_recognition_EXTERNAL_OBJECTS =
 
-target_recognition: CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o
 target_recognition: CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o
-target_recognition: CMakeFiles/target_recognition.dir/src/main.cpp.o
-target_recognition: CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o
+target_recognition: CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o
 target_recognition: CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o
+target_recognition: CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o
+target_recognition: CMakeFiles/target_recognition.dir/src/main.cpp.o
 target_recognition: CMakeFiles/target_recognition.dir/src/tools.cpp.o
 target_recognition: CMakeFiles/target_recognition.dir/build.make
 target_recognition: /usr/local/lib/libopencv_shape.so.3.2.0
@@ -237,7 +237,7 @@ target_recognition: /usr/local/lib/libopencv_imgcodecs.so.3.2.0
 target_recognition: /usr/local/lib/libopencv_imgproc.so.3.2.0
 target_recognition: /usr/local/lib/libopencv_core.so.3.2.0
 target_recognition: CMakeFiles/target_recognition.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable target_recognition"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable target_recognition"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/target_recognition.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -245,11 +245,11 @@ CMakeFiles/target_recognition.dir/build: target_recognition
 
 .PHONY : CMakeFiles/target_recognition.dir/build
 
-CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.requires
 CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/ransac_line2d.cpp.o.requires
-CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/main.cpp.o.requires
-CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.requires
+CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/ReadParams.cpp.o.requires
 CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/detect_line_space.cpp.o.requires
+CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/detect_parking_space.cpp.o.requires
+CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/main.cpp.o.requires
 CMakeFiles/target_recognition.dir/requires: CMakeFiles/target_recognition.dir/src/tools.cpp.o.requires
 
 .PHONY : CMakeFiles/target_recognition.dir/requires
@@ -259,6 +259,6 @@ CMakeFiles/target_recognition.dir/clean:
 .PHONY : CMakeFiles/target_recognition.dir/clean
 
 CMakeFiles/target_recognition.dir/depend:
-	cd /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lx/CLionProjects/lane_line_postprocessing/target_recognition /home/lx/CLionProjects/lane_line_postprocessing/target_recognition /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug/CMakeFiles/target_recognition.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lx/CLionProjects/lane_line_pro/target_recognition /home/lx/CLionProjects/lane_line_pro/target_recognition /home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug /home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug /home/lx/CLionProjects/lane_line_pro/target_recognition/cmake-build-debug/CMakeFiles/target_recognition.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/target_recognition.dir/depend
 

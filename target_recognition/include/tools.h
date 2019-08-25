@@ -101,7 +101,20 @@ int  ipm_points(std::vector<cv::Point> &src, std::vector<cv::Point> &dst);
 
 int solve_mid_line(aps::LineModel &l1, aps::LineModel &l2, aps::LineModel &l_mid);
 
+
+
+//common API
 //calu dis in 2 lines
+//Vec4f = x0,y0,x1,y1. (x0,y0) is the left, bottom(x0=x1) point
 double calu_dis_2lines(cv::Vec4f & line1, cv::Vec4f & line2);
+
+//rank=1  y = b + k * x
+//rank=2  y = x0 + x1 * x + x2 * x^2
+bool polynomial_curve_fit(std::vector<cv::Point>& points, int rank, cv::Mat& coef);
+
+//Hough 后直线初次combined
+bool lines_combined(std::vector<cv::Vec4f> & plines, std::vector<cv::Vec4f> & plines_combined);
+
+
 
 #endif //TARGET_RECOGNITION_TOOLS_H

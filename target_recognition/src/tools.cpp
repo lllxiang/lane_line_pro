@@ -290,6 +290,98 @@ double calu_dis_2lines(cv::Vec4f & line1, cv::Vec4f & line2)
     return (atob+btoa)/2;
 }
 
+bool polynomial_curve_fit(std::vector<cv::Point>& points, int rank, cv::Mat& coef)
+{
+    //Number of points
+    int num = points.size();
+    //X matrix
+    cv::Mat X = cv::Mat::zeros(rank + 1, rank + 1, CV_64FC1);
+    for (int i = 0; i < rank + 1; i++)
+    {
+        for (int j = 0; j < rank + 1; j++)
+        {
+            for (int k = 0; k < num; k++)
+            {
+                X.at<double>(i, j) = X.at<double>(i, j) +
+                                     std::pow(points[k].x, i + j);
+            }
+        }
+    }
+    //Y matrix
+    cv::Mat Y = cv::Mat::zeros(rank + 1, 1, CV_64FC1);
+    for (int i = 0; i < rank + 1; i++)
+    {
+        for (int k = 0; k < num; k++)
+        {
+            Y.at<double>(i, 0) = Y.at<double>(i, 0) +
+                                 std::pow(points[k].x, i) * points[k].y;
+        }
+    }
+    coef = cv::Mat::zeros(rank + 1, 1, CV_64FC1);
+    //solve A
+    cv::solve(X, Y, coef, cv::DECOMP_LU);
+    return true;
+}
+
+bool lines_combined(std::vector<cv::Vec4f> & plines, std::vector<cv::Vec4f> & plines_combined)
+{
+    int class_nums[plines.size()];
+    for(int i=0; i<plines.size();++i)
+    {
+        class_nums[i]=10000;
+    }
+    int class_now = 0;
+    for(int i=0; i<plines.size(); ++i)
+    {
+        if (class_nums[i] > 1000) //not clustered
+        {
+            class_nums[i] = class_now;
+        }
+        else
+        {
+            continue;
+        }
+        for (int j=0; j<plines.size();j++)
+        {
+            if(calu_dis_2lines(plines[i], plines[j]) < 5) //5cm
+            {
+                class_nums[j] = class_now;
+            }
+        }
+        class_now++;
+    }
+
+    for(int i=0; i< class_now; ++i)
+    {
+        std::vector<cv::Point> tp;
+        for(int j=0;j<plines.size();++j)
+        {
+            if (class_nums[j] == i)
+            {
+                tp.push_back(cv::Point((int)plines[j][0],(int)plines[j][1]));
+                tp.push_back(cv::Point((int)plines[j][2],(int)plines[j][3]));
+            }
+        }
+        int miny=1000; int maxy=0;
+        int min_dex=0; int max_dex=0;
+        for(int i=0; i<tp.size();i++)
+        {
+            if(tp[i].y > maxy)
+            {
+                maxy = tp[i].y;
+                max_dex = i;
+            }
+            if(tp[i].y < miny)
+            {
+                miny = tp[i].y;
+                min_dex = i;
+            }
+        }
+        plines_combined.push_back(cv::Vec4f(tp[min_dex].x,tp[min_dex].y, tp[max_dex].x,tp[max_dex].y));
+    }
+    return true;
+}
+
 
 
 

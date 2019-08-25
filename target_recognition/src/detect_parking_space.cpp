@@ -308,7 +308,7 @@ int parking_space::detect()
 
 int parking_space::detect_test() {
     std::vector<cv::Scalar> cmap;
-    for(int i=0;i<30;i++)
+    for(int i=0;i<50;i++)
     {
         cmap.push_back(cv::Scalar(rand()%255, rand()%255, rand()%255));
     }
@@ -337,9 +337,10 @@ int parking_space::detect_test() {
     std::vector<cv::Vec4f> plines;
     //Hough直线检测API
      start = static_cast<double>(cvGetTickCount());
-     cv::HoughLinesP(img_t, plines, 1, CV_PI / 180, 30, 40, 5);
+     cv::HoughLinesP(img_t, plines, 1, CV_PI / 180, 30, 40, 10);
      time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
     std::cout << "1->hough边缘检测耗时:" << time/1000<<"ms"<<std::endl;
+
 
     //标记出直线
     for (size_t i = 0; i < plines.size(); i++)
@@ -353,49 +354,22 @@ int parking_space::detect_test() {
 
         line(img_ps_bgr_ipm, cv::Point(point1[0], point1[1]), cv::Point(point1[2], point1[3]), cv::Scalar(rand()%255, rand()%255, rand()%255), 1, cv::LINE_AA);
     }
+
     //输入plines, 输出plines_combined
-    start = static_cast<double>(cvGetTickCount());
-
     std::vector<cv::Vec4f> plines_combined;
-    int class_nums[plines.size()];
-    for(int i=0; i<plines.size();++i)
-    {
-        class_nums[i]=10000;
-    }
-    int class_now = 0;
-    for(int i=0; i<plines.size(); ++i)
-    {
-        if (class_nums[i] > 1000) //not clustered
-        {
-            class_nums[i] = class_now;
-        }
-        else
-        {
-            continue;
-        }
-        for (int j=0; j<plines.size();j++)
-        {
-            if(calu_dis_2lines(plines[i], plines[j]) < 6) //6cm
-            {
-                class_nums[j] = class_now;
-            }
-        }
-        class_now++;
-    }
-    time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
-    std::cout << "2->plines_combined聚类耗时:" << time/1000<<"ms"<<std::endl;
+    lines_combined(plines,plines_combined);
 
-    for(int i=0; i<plines.size();i++)
+    for(int i=0; i<plines_combined.size();i++)
     {
-        cv::Vec4f point1 = plines[i];
-        line(img_ps_bgr_ipm, cv::Point(point1[0], point1[1]), cv::Point(point1[2], point1[3]), cmap[class_nums[i]], 2, cv::LINE_AA);
+        cv::Vec4f point1 = plines_combined[i];
+        line(img_ps_bgr_ipm, cv::Point(point1[0], point1[1]), cv::Point(point1[2], point1[3]), cmap[i], 2, cv::LINE_AA);
     }
+
 
     cv::imshow("img_t", img_t);
     cv::imshow("img_ps_mask", img_ps_mask);
     cv::imshow("img_ps_bgr", img_ps_bgr);
     cv::imshow("img_ps_bgr_ipm", img_ps_bgr_ipm);
-
     cv::imshow("img_mask_canndy", img_mask_canndy);
     cv::waitKey(0);
 }

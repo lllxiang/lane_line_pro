@@ -24,7 +24,6 @@ bool src2dist(std::vector<cv::Point2f> &src, std::vector<cv::Point2f> &dst,
     cv::Mat & mapx, cv::Mat & mapy);
 bool read_cam_params(std::string &d);
 
-bool polynomial_curve_fit(std::vector<cv::Point>& key_point, int n, cv::Mat& A);
 int solve_super_rect(super_rect & sr);
 
 
@@ -33,12 +32,12 @@ int main()
 {
 
     struct dirent *dirp;
-    std::string img_labeled_dir = "/home/lx/data/surround_line14_test/lednet/all_left/all-left-img/";
-    std::string img_pred_dir = "/home/lx/data/surround_line14_test/lednet/all_left/all-left-pred/";
+    std::string img_labeled_dir = "/home/lx/data/surround_line14_test/lednet/6left/6left_img/";
+    std::string img_pred_dir = "/home/lx/data/surround_line14_test/lednet/6left/6left_pred/";
     std::string img_labeled_all_dir, img_pred_all_dir;
     DIR* dir = opendir(img_labeled_dir.c_str());
     cv::Mat src_img,src_pred;
-    int nImg = 1014;
+    int nImg = 251;
     while ((dirp = readdir(dir)) != NULL)
     {
         if (dirp->d_type == DT_REG)
@@ -49,14 +48,16 @@ int main()
             //img_labeled_all_dir = img_labeled_dir + tname;
             // img_pred_all_dir = img_pred_dir + tname.substr(0,numof)+".png";
             //std::string direction = tname.substr(numof_ - 2 ,2);
-            img_labeled_all_dir = img_labeled_dir + "4left_" + std::to_string(nImg) + ".jpg";
-            img_pred_all_dir = img_pred_dir + "4left_" + std::to_string(nImg) + ".png";
+            img_labeled_all_dir = img_labeled_dir + "im_" + std::to_string(nImg) + ".jpg";
+            img_pred_all_dir = img_pred_dir + "im_" + std::to_string(nImg) + ".png";
+            std::cout<<"当前处理的图片路径img_labeled_all_dir："<<img_labeled_all_dir << std::endl;
+            std::cout<<"当前处理的图片路径img_pred_all_dir："<<img_pred_all_dir << std::endl;
             std::string direction = "ft";
             nImg++;
                     //读取相机参数
             read_cam_params(direction);
             //读取图片
-            std::cout<<"当前处理的图片路径："<<img_labeled_all_dir << std::endl;
+
             src_img = cv::imread(img_labeled_all_dir);
             src_pred = cv::imread(img_pred_all_dir,cv::IMREAD_GRAYSCALE);
             //提取目标类别
@@ -69,7 +70,6 @@ int main()
             int type = 1;
             ipm_trans(direction,type, line_pred, line_pred_ipm);
             ipm_trans(direction,type, src_img, src_img_ipm);
-
 
 
             //车位线检测--车位搜索
@@ -294,40 +294,7 @@ bool read_cam_params(std::string &d)
 }
 
 
-bool polynomial_curve_fit(std::vector<cv::Point>& key_point, int n, cv::Mat& A)
-{
-    //Number of key points
-    int N = key_point.size();
-    //构造矩阵X
-    cv::Mat X = cv::Mat::zeros(n + 1, n + 1, CV_64FC1);
-    for (int i = 0; i < n + 1; i++)
-    {
-        for (int j = 0; j < n + 1; j++)
-        {
-            for (int k = 0; k < N; k++)
-            {
-                X.at<double>(i, j) = X.at<double>(i, j) +
-                                     std::pow(key_point[k].x, i + j);
-            }
-        }
-    }
 
-    //构造矩阵Y
-    cv::Mat Y = cv::Mat::zeros(n + 1, 1, CV_64FC1);
-    for (int i = 0; i < n + 1; i++)
-    {
-        for (int k = 0; k < N; k++)
-        {
-            Y.at<double>(i, 0) = Y.at<double>(i, 0) +
-                                 std::pow(key_point[k].x, i) * key_point[k].y;
-        }
-    }
-
-    A = cv::Mat::zeros(n + 1, 1, CV_64FC1);
-    //求解矩阵A
-    cv::solve(X, Y, A, cv::DECOMP_LU);
-    return true;
-}
 
 
 
