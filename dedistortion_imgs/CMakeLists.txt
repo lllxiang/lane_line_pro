@@ -10,7 +10,7 @@ find_package(OpenCV REQUIRED)
 include_directories(./include)
 
 
-add_executable(dedistortion_imgs ${CPP_SOURCES})
+add_executable(dedistortion_imgs ${CPP_SOURCES} src/main.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
 target_link_libraries(${PROJECT_NAME} m)

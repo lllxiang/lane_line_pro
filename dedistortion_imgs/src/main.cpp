@@ -11,38 +11,72 @@ int getCameraParams_senyun(cv::Mat & cameraMatrix, cv::Mat & dst_cameraMatrix,
                     double cx,double cy);
 
 int main(int argc, const char * argv[]) {
-    struct dirent *dirp;
+
     cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
     cv::Mat dst_cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
     cv::Mat distCoeffs = cv::Mat::zeros(4, 1, CV_64F);
-    std::string video_dir = "/home/lx/data/surround_line14_test/lednet/seg_test/6left.avi";
+    std::string which_video = "10rear";
+
+    std::string video_dir = "/home/lx/data/surround_line14_test/lednet/" + which_video + "/10rear.avi";
+    std::string img_distorted_dir = "/home/lx/data/surround_line14_test/lednet/" + which_video + "/img_distorted/";
+    std::string img_undistorted_dir = "/home/lx/data/surround_line14_test/lednet/" + which_video + "/img_undistorted/";
 
     cv::VideoCapture cap(video_dir);
     cv::Size imageSize(640, 480);
     cv::Mat map_x, map_y;
     cv::Mat frame, dst;
     int n = 0;
-    bool isVideo = 1;
-    while (1) {
-        if (isVideo) {
+    bool isVideo = 0;
+    struct dirent *dirp;
+    DIR *dir = opendir(img_distorted_dir.c_str());
+    getCameraParams(cameraMatrix, dst_cameraMatrix,
+                    distCoeffs, "ft", 1, 1); //left
+    cv::fisheye::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
+                                         cameraMatrix, imageSize, CV_32FC1, map_x, map_y);
+    if (isVideo)
+    {
+        while (cap.isOpened())
+        {
             cap.read(frame);
-        } else {
-            frame = cv::imread("/home/lx/data/surround_line14_test/seg_test/left/6front_" + std::to_string(n) + ".jpg");
+            getCameraParams(cameraMatrix, dst_cameraMatrix,
+                            distCoeffs, "ar", 1, 1); //left
+            cv::fisheye::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
+                                                 cameraMatrix, imageSize, CV_32FC1, map_x, map_y);
+            cv::remap(frame, dst, map_x, map_y, cv::INTER_LINEAR);
+
+            cv::imwrite("/home/lx/data/surround_line14_test/lednet/" + which_video + "/img_undistorted/im_" + std::to_string(n) + ".jpg", dst);
+            cv::imwrite("/home/lx/data/surround_line14_test/lednet/" + which_video + "/img_distorted/im_" + std::to_string(n) + ".jpg", frame);
+
+            cv::imshow("frame", frame);
+            cv::imshow("dst", dst);
+            cv::waitKey(1);
+            n++;
         }
 
-        getCameraParams(cameraMatrix, dst_cameraMatrix,
-                        distCoeffs, "ft", 0.9, 0.9); //left
-        cv::fisheye::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
-                                             dst_cameraMatrix, imageSize, CV_32FC1, map_x, map_y);
-        cv::remap(frame, dst, map_x, map_y, cv::INTER_LINEAR);
-
-        cv::imwrite("/home/lx/data/surround_line14_test/lednet/seg_test/6left_dist/im_" + std::to_string(n) + ".jpg", dst);
-        cv::imshow("frame", frame);
-        cv::imshow("dst", dst);
-        cv::waitKey(1);
-
-        n++;
     }
+    else
+    {
+        while ((dirp = readdir(dir)) != NULL)
+        {
+            if (dirp->d_type == DT_REG)
+            {
+                std::string tname = dirp->d_name;
+                std::cout<<"img name now propressed is = " << tname <<std::endl;
+                frame = cv::imread(img_distorted_dir+tname);
+
+                cv::remap(frame, dst, map_x, map_y, cv::INTER_LINEAR);
+
+                cv::imwrite(img_undistorted_dir + tname, dst);
+
+                cv::imshow("distort img", frame);
+                cv::imshow("dst", dst);
+                cv::waitKey(1);
+
+            }
+        }
+    }
+
+
 }
 
 
@@ -136,8 +170,6 @@ int getCameraParams(cv::Mat & cameraMatrix, cv::Mat & dst_cameraMatrix,
   cv::Mat tcameraMatrix = cv::Mat::eye(3, 3, CV_64F);
   cv::Mat t_dst_cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
   cv::Mat tdistCoeffs = cv::Mat::zeros(4, 1, CV_64F);
-  //double rx = 0.8;
-  //double ry = 0.8;
   if(flag == "ft") //left
   {
 	tcameraMatrix.at<double>(0, 0) = 273.941;
@@ -146,7 +178,6 @@ int getCameraParams(cv::Mat & cameraMatrix, cv::Mat & dst_cameraMatrix,
 	tcameraMatrix.at<double>(1, 2) = 287.867;
 
 	t_dst_cameraMatrix.at<double>(0, 0) = 273.941*rx;
-	t_dst_cameraMatrix.at<double>(0, 1) = 0;
 	t_dst_cameraMatrix.at<double>(0, 2) = 328.962;
 	t_dst_cameraMatrix.at<double>(1, 1) = 274.807*ry;
 	t_dst_cameraMatrix.at<double>(1, 2) = 287.867;

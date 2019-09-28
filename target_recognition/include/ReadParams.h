@@ -16,8 +16,4 @@ void on_mouse(int event, int x, int y, int flag, void *param);
 bool perspectiveTransCalibration();
 void moving_mouse(int event, int x, int y, int flags, void* ustc);
 bool findCorners(const cv::Mat img, cv::Size board_size, std::vector<cv::Point2f> &corners);
-void  computeWorldcoordWithZ(const std::vector<cv::Point2f>& imagePoints,
-                                          std::vector<cv::Point2f>& objectPoints,
-                                          const cv::Mat&  rvec,
-                                          const cv::Mat&  tvec,
-                                          const cv::Mat&  K);
+

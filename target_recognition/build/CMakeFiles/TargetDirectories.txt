@@ -1,3 +1,0 @@
-/home/lx/CLionProjects/lane_line_pro/target_recognition/build/CMakeFiles/rebuild_cache.dir
-/home/lx/CLionProjects/lane_line_pro/target_recognition/build/CMakeFiles/edit_cache.dir
-/home/lx/CLionProjects/lane_line_pro/target_recognition/build/CMakeFiles/target_recognition.dir

@@ -32,14 +32,41 @@ cv::Mat mapy(imageSize, CV_32FC1);
 std::vector<cv::Point> mousePoint;
 
 // fish4 lateral camera parameters
-const std::string distortionFileName = "/home/baozhengfan/workspace/intrinsic_param_calib_image_input/calibration/fish2/distortion.txt";
-const std::string intrinsicFileName = "/home/baozhengfan/workspace/intrinsic_param_calib_image_input/calibration/fish2/intrinsic.txt";
-const std::string perspectiveFileName = "/home/baozhengfan/workspace/intrinsic_param_calib_image_input/calibration/fish2/perspectiveTransformCalibration.txt";
-const std::string extrinsicFileName = "/home/baozhengfan/workspace/intrinsic_param_calib_image_input/calibration/fish2/extrinsic.txt";
+const std::string distortionFileName = "/home/lx/data/suround_view_src_data/calibration/weishi/fish_test/distortion.txt";
+const std::string intrinsicFileName = "/home/lx/data/suround_view_src_data/calibration/weishi/fish_test/intrinsic.txt";
+const std::string perspectiveFileName = "/home/lx/data/suround_view_src_data/calibration/weishi/fish_test/perspectiveTransformCalibration.txt";
+const std::string extrinsicFileName = "/home/lx/data/suround_view_src_data/calibration/weishi/fish_test/extrinsic.txt";
+Mat org;
+int n = 0;
+vector<Point> capturePoint;
+void on_mouse(int event, int x, int y, int flags, void *ustc)//event鼠标事件代号，x,y鼠标坐标，flags拖拽和键盘操作的代号
+{
+    Point pt;//坐标点;
+    char coordinateName[16];
+
+    if (event == CV_EVENT_LBUTTONDOWN)//左键按下，读取坐标，并在图像上该点处划圆
+    {
+        pt = Point(x, y);
+        cout << x << " " << y << endl;
+        capturePoint.push_back(pt);
+        cout << capturePoint[n].x << " " << capturePoint[n].y << endl;
+        cout << "n=" << n << endl;
+        n++;
+        circle(org, pt, 2, Scalar(255, 0, 0, 0), CV_FILLED, CV_AA, 0);//划圆
+        sprintf(coordinateName, "(%d,%d)", x, y);
+        putText(org, coordinateName, pt, FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 0, 255), 1, 8);//在窗口上显示坐标
+        if (n >= 1)
+        {
+            //imshow("org", org);
+            cvDestroyAllWindows();
+        }
+    }
+}
 
 
 int main()
 {
+
     cv::Mat R = Mat::eye(3, 3, CV_32F);
     intrinsic = readIntrinsicParams(intrinsicFileName);
     distortion = readDistortionParams(distortionFileName);
@@ -160,16 +187,17 @@ int main()
 
 #if (calcute_extrisic_with_PNP_with_board)
     {
-        cv::Size board_size = cv::Size(6, 4);
+        cv::Size board_size = cv::Size(9, 6);
         std::vector<cv::Point2f> corners;
-        float boardH = 20; //board :3.7cm
+        float boardH = 2.3; //board :3.7cm
+        float boardW = 2.3; //board :3.7cm
         std::vector<cv::Point3f> worldPoints;
         std::vector<cv::Point2f> imagePoints;
         std::vector<cv::Point2f> imgPoints;
         std::vector<cv::Point3f> r;
         worldPoints.push_back(cv::Point3f(0,0,0));
-        worldPoints.push_back(cv::Point3f((board_size.width-1)*boardH,0,0));
-        worldPoints.push_back(cv::Point3f((board_size.width-1)*boardH,(board_size.height-1)*boardH,0));
+        worldPoints.push_back(cv::Point3f((board_size.width-1)*boardW,0,0));
+        worldPoints.push_back(cv::Point3f((board_size.width-1)*boardW,(board_size.height-1)*boardH,0));
         worldPoints.push_back(cv::Point3f((0,(board_size.height-1)*boardH,0)));
 
         bool calFlag = false;
@@ -186,31 +214,41 @@ int main()
         }
         cv::Mat resize_img;
 
-        while (cv::waitKey(5) != 27)
+        while (cv::waitKey(0) != 27)
         {
             cap >> frame;
 //            cv::resize(frame,resize_img,imageSize);
 //            resImg = resize_img.clone();
 
             cv::remap(frame, undistortionImg, mapx, mapy, CV_INTER_LINEAR, cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
-             if (!undistortionImg.empty() && findCorners(undistortionImg, board_size, corners))
+             if (!undistortionImg.empty())
             {
-                for (int j = 0; j < corners.size(); j++)
+                cv::Mat tmp_img = undistortionImg.clone();
+                for(int i=0; i<4; i++)
                 {
-                    if(j==0 || j == board_size.width-1 ||
-                            j== board_size.area()-1 || j== board_size.width*(board_size.height-1))
-                        circle(undistortionImg, corners[j], 3, Scalar(0, 255, 0), 3, 8, 0);
-
-                    else
-                        circle(undistortionImg, corners[j], 3, Scalar(0, 0, 255), 2, 8, 0);
+                    namedWindow("tmp_img", 1);//定义一个org窗口
+                    setMouseCallback("tmp_img", on_mouse, 0);//调用回调函数
+                    imshow("tmp_img", tmp_img);
+                    waitKey(0);
+                }corners.clear();
+                for(int i=0; i<4;i++)
+                {
+                    cout<<"capturePoint[i] "<<capturePoint[i]<<endl;
+                    imagePoints.push_back(cv::Point2f(capturePoint[i]));
                 }
-                if(cv::waitKey(10) =='s'||cv::waitKey(10)=='S')
+
+                for (int j = 0; j < imagePoints.size(); j++)
+                {
+                        circle(undistortionImg, imagePoints[j], 3, Scalar(0, 0, 255), 2, 8, 0);
+                }
+
+                if(1)
                 {
                     std::cout<<"******Extrinsic calibration...!*********"<<std::endl;
-                    imagePoints.push_back(corners[0]);
-                    imagePoints.push_back(corners[board_size.width-1]);
-                    imagePoints.push_back(corners[board_size.area()-1]);
-                    imagePoints.push_back(corners[board_size.width*(board_size.height-1)]);
+//                    imagePoints.push_back(corners[0]);
+//                    imagePoints.push_back(corners[board_size.width-1]);
+//                    imagePoints.push_back(corners[board_size.area()-1]);
+//                    imagePoints.push_back(corners[board_size.width*(board_size.height-1)]);
 
                     std::cout<<"corner1 "<<imagePoints[0]<<std::endl;
                     std::cout<<"corner2 "<<imagePoints[1]<<std::endl;
@@ -229,11 +267,11 @@ int main()
                     fout_extrinsic << translation_vectors.at<double>(0,0) << std::endl;
                     fout_extrinsic << translation_vectors.at<double>(0,1) << std::endl;
                     fout_extrinsic << translation_vectors.at<double>(0,2) << std::endl;
-                     std::cout<<"******Extrinsic calibration is done!*********"<<std::endl;
+                    std::cout<<"******Extrinsic calibration is done!*********"<<std::endl;
                     calFlag=true;
-                    for (int j = -1; j <= 5; j++)
-                        for (int i = -1; i <= 7; i++)
-                            r.push_back(cv::Point3f(boardH * i, boardH * j, 0));
+                    for (int j = 0; j < 6; j++)
+                        for (int i = 0; i < 9; i++)
+                            r.push_back(cv::Point3f(boardW * i, boardH * j, 0));
 
                     cv::fisheye::projectPoints(r,imgPoints,rotation_vectors, translation_vectors, intrinsic,distortion);
                     imagePoints.clear();

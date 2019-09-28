@@ -6,31 +6,7 @@
 #define camera_calibrate_perspective_Mat 0
 
 /*****************************    coordinate system transform       *******************************/
-void  computeWorldcoordWithZ(const std::vector<cv::Point2f>& imagePoints,
-                                          std::vector<cv::Point2f>& objectPoints,
-                                          const cv::Mat&  rvec,
-                                          const cv::Mat&  tvec,
-                                          const cv::Mat&  K)
-{
-    cv::Mat Ma = (cv::Mat_<double>(2, 2));
-    cv::Mat Mb = (cv::Mat_<double>(2, 1));
-    cv::Mat  c = (cv::Mat_<double>(2, 1));
 
-    for (int i = 0; i < imagePoints.size(); ++i)
-    {
-        Ma.at<double>(0, 0) = K.at<double>(0, 0) * rvec.at<double>(0, 0) + K.at<double>(0, 2) * rvec.at<double>(2, 0) - rvec.at<double>(2, 0) * imagePoints[i].x;
-        Ma.at<double>(0, 1) = K.at<double>(0, 0) * rvec.at<double>(0, 1) + K.at<double>(0, 2) * rvec.at<double>(2, 1) - rvec.at<double>(2, 1) * imagePoints[i].x;
-
-        Ma.at<double>(1, 0) = K.at<double>(1, 1) * rvec.at<double>(1, 0) + K.at<double>(1, 2) * rvec.at<double>(2, 0) - rvec.at<double>(2, 0) * imagePoints[i].y;
-        Ma.at<double>(1, 1) = K.at<double>(1, 1) * rvec.at<double>(1, 1) + K.at<double>(1, 2) * rvec.at<double>(2, 1) - rvec.at<double>(2, 1) * imagePoints[i].y;
-
-        Mb.at<double>(0, 0) = tvec.at<double>(0, 2) * imagePoints[i].x - K.at<double>(0, 0) * tvec.at<double>(0, 0) - K.at<double>(0, 2) * tvec.at<double>(0, 2);//objectPoints[i].z ;
-        Mb.at<double>(1, 0) = tvec.at<double>(0, 2) * imagePoints[i].y - K.at<double>(1, 1) * tvec.at<double>(0, 1) - K.at<double>(1, 2) * tvec.at<double>(0, 2);//objectPoints[i].z ;
-
-        cv::solve(Ma, Mb, c, CV_SVD);
-        objectPoints.push_back(cv::Point2f(c.at<double>(0, 0), c.at<double>(1, 0)));
-    }
-}
  bool findCorners(const cv::Mat img, cv::Size board_size, std::vector<cv::Point2f> &corners)
 {
     cv::Mat imageGray;

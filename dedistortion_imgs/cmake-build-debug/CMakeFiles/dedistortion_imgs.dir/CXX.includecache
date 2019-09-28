@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/lx/CLionProjects/lane_line_pro/dedistortion_imgs/src/main.cpp
+/home/lx/CLionProjects/lane_line_postprocessing/dedistortion_imgs/src/main.cpp
 stdio.h
 -
 dirent.h

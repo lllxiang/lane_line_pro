@@ -1,0 +1,4 @@
+/home/lx/software/clion-2018.1.5/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/lx/CLionProjects/lane_line_postprocessing/target_recognition
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/lx/CLionProjects/lane_line_postprocessing/target_recognition/cmake-build-debug

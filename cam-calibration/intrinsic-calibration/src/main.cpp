@@ -45,7 +45,7 @@ void getFileNames(const std::string path, std::vector<std::string>& filenames,  
 int main()
 {
     stringstream file_name;
-    string path_name = "/home/baozhengfan/workspace/intrinsic_param_calib_image_input/calibration/fish1"; //保存结果
+    string path_name = "/home/lx/data/suround_view_src_data/calibration/weishi/fish_test"; //保存结果
 
     file_name << path_name;
     ofstream fout(file_name.str() + "/calibrate_result.txt");
@@ -58,7 +58,7 @@ int main()
     std::cout << "开始提取角点­" << std::endl;
     //int image_count=  125;
     Size board_size = Size(9, 6);            //标定布内角点
-    Size2f square_size = Size2f(3.7, 3.7);  //20,20
+    Size2f square_size = Size2f(2.3, 2.3);  //20,20
     vector<Point2f> corners;
     vector<vector<Point2f>>  corners_Seq;
     vector<Mat>  image_Seq;
@@ -103,7 +103,7 @@ int main()
         }
         else
         {
-            cornerSubPix(imageGray, corners, Size(11, 11), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.1));            
+            cornerSubPix(imageGray, corners, Size(11, 11), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.1));
             Mat imageTemp = image.clone();
             for (int j = 0; j < corners.size(); j++)
             {
@@ -141,7 +141,7 @@ int main()
         for (int i = 0; i < board_size.height; i++)
         {
             for (int j = 0; j < board_size.width; j++)
-            {                
+            {
                 Point3f tempPoint;
                 tempPoint.x = (float)i*square_size.width;
                 tempPoint.y = (float)j*square_size.height;
@@ -178,8 +178,8 @@ int main()
 
     for (int i = 0; i < successImageNum; i++)
     {
-        vector<Point3f> tempPointSet = object_Points[i];        
-        fisheye::projectPoints(tempPointSet, image_points2, rotation_vectors[i], translation_vectors[i], intrinsic_matrix, distortion_coeffs);        
+        vector<Point3f> tempPointSet = object_Points[i];
+        fisheye::projectPoints(tempPointSet, image_points2, rotation_vectors[i], translation_vectors[i], intrinsic_matrix, distortion_coeffs);
         vector<Point2f> tempImagePoint = corners_Seq[i];
         Mat tempImagePointMat = Mat(1, tempImagePoint.size(), CV_32FC2);
         Mat image_points2Mat = Mat(1, image_points2.size(), CV_32FC2);
@@ -256,7 +256,7 @@ int main()
         cout << "Frame #" << i + 1 << "..." << endl;
         Mat newCameraMatrix = Mat(3, 3, CV_32FC1, Scalar::all(0));
         fisheye::initUndistortRectifyMap(intrinsic_matrix, distortion_coeffs, R,
-            getOptimalNewCameraMatrix(intrinsic_matrix, distortion_coeffs, image_size, 1, image_size, 0), image_size, CV_32FC1, mapx, mapy);
+                                         intrinsic_matrix, image_size, CV_32FC1, mapx, mapy);
         Mat t = image_Seq[i].clone();
         cv::remap(image_Seq[i], t, mapx, mapy, INTER_LINEAR);
         string imageFileName;
@@ -272,4 +272,3 @@ int main()
     cout << "保存结束" << endl;
 return 0;
 }
-

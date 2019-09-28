@@ -54,10 +54,10 @@ RM = /home/lx/software/clion-2018.1.5/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lx/CLionProjects/lane_line_pro/dedistortion_imgs
+CMAKE_SOURCE_DIR = /home/lx/CLionProjects/lane_line_postprocessing/dedistortion_imgs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lx/CLionProjects/lane_line_pro/dedistortion_imgs/cmake-build-debug
+CMAKE_BINARY_DIR = /home/lx/CLionProjects/lane_line_postprocessing/dedistortion_imgs/cmake-build-debug
 
 #=============================================================================
 # Target rules for target CMakeFiles/dedistortion_imgs.dir
@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/lx/CLionProjects/lane_line_pro/dedistortion_imgs/cmake-
 CMakeFiles/dedistortion_imgs.dir/all:
 	$(MAKE) -f CMakeFiles/dedistortion_imgs.dir/build.make CMakeFiles/dedistortion_imgs.dir/depend
 	$(MAKE) -f CMakeFiles/dedistortion_imgs.dir/build.make CMakeFiles/dedistortion_imgs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lx/CLionProjects/lane_line_pro/dedistortion_imgs/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target dedistortion_imgs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lx/CLionProjects/lane_line_postprocessing/dedistortion_imgs/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target dedistortion_imgs"
 .PHONY : CMakeFiles/dedistortion_imgs.dir/all
 
 # Include target in all.
@@ -76,9 +76,9 @@ all: CMakeFiles/dedistortion_imgs.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/dedistortion_imgs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lx/CLionProjects/lane_line_pro/dedistortion_imgs/cmake-build-debug/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lx/CLionProjects/lane_line_postprocessing/dedistortion_imgs/cmake-build-debug/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/dedistortion_imgs.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lx/CLionProjects/lane_line_pro/dedistortion_imgs/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lx/CLionProjects/lane_line_postprocessing/dedistortion_imgs/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/dedistortion_imgs.dir/rule
 
 # Convenience name for target.
