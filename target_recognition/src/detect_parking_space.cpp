@@ -436,22 +436,3 @@ parking_space::parking_space() {
 parking_space::~parking_space() {
     outputVideo.release();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
