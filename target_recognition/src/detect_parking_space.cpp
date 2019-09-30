@@ -90,18 +90,19 @@ void parking_space::show2()
     for(int i=0; i<pos_separating_lines.size();i++)
     {
         cv::Vec6f point1 = pos_separating_lines[i];
+
         line(img_lines_fitting, cv::Point(point1[2], point1[3]),
              cv::Point(point1[0], point1[1]), cv::Scalar(0,0,255), 2, cv::LINE_AA);
-        cv::circle(img_lines_fitting, cv::Point(point1[0], point1[1]),3,cv::Scalar(255,0,0),-1,8,0);
-        cv::circle(img_lines_fitting, cv::Point(point1[2], point1[3]),3,cv::Scalar(0,255,0),-1,8,0);
+        //cv::circle(img_lines_fitting, cv::Point(point1[0], point1[1]),3,cv::Scalar(255,0,0),-1,8,0);
+        //cv::circle(img_lines_fitting, cv::Point(point1[2], point1[3]),3,cv::Scalar(0,255,0),-1,8,0);
     }
     for(int i=0; i<neg_separating_lines.size();i++)
     {
         cv::Vec6f point1 = neg_separating_lines[i];
         line(img_lines_fitting, cv::Point(point1[0], point1[1]),
              cv::Point(point1[2], point1[3]), cv::Scalar(255,0,0), 2, cv::LINE_AA);
-        cv::circle(img_lines_fitting, cv::Point(point1[0], point1[1]),3,cv::Scalar(255,0,0),-1,8,0);
-        cv::circle(img_lines_fitting, cv::Point(point1[2], point1[3]),3,cv::Scalar(0,255,0),-1,8,0);
+        //cv::circle(img_lines_fitting, cv::Point(point1[0], point1[1]),3,cv::Scalar(255,0,0),-1,8,0);
+        //cv::circle(img_lines_fitting, cv::Point(point1[2], point1[3]),3,cv::Scalar(0,255,0),-1,8,0);
     }
 
     //显示正负分割线 (含有端点)
@@ -178,13 +179,14 @@ void parking_space::show2()
 //
 //    cv::imshow("img_ps_mask_ipm", img_ps_mask_ipm);
 
-    cv::waitKey(0);
+    cv::waitKey(1);
 
 }
 
 
 
-int parking_space::detect_test() {
+int parking_space::detect_test()
+{
 //    int roi_x = 320;
 //    int roi_y = 0;
 //    int roi_w = 220;
@@ -269,8 +271,6 @@ int parking_space::detect_test() {
     perspective_transform_lines(tpos_lines, pos_lines, H);
     perspective_transform_lines(tneg_lines, neg_lines, H);
 
-
-
     //3.0 对正负线段分别聚类
     pos_lines_cluster.clear();
     neg_lines_cluster.clear();
@@ -323,8 +323,8 @@ int parking_space::detect_test() {
         {
             for (int j = 0; j < right_L_point.size(); ++j)
             {
-//                std::cout << "left_L_point[i].point_L " << left_L_point[i].point_L << std::endl;
-//                std::cout << "right_L_point[i].point_L" << right_L_point[j].point_L << std::endl;
+                std::cout << "left_L_point[i].point_L " << left_L_point[i].point_L << std::endl;
+                std::cout << "right_L_point[i].point_L" << right_L_point[j].point_L << std::endl;
                 if (right_L_point[j].point_L.x < left_L_point[i].point_L.x)
                 {
                     continue;
@@ -332,11 +332,22 @@ int parking_space::detect_test() {
                 double param = fabsf(left_L_point[i].alpha - right_L_point[j].alpha);
 
                 double dis = calu_dis_2lines_m2(left_L_point[i].vertical_line,right_L_point[j].vertical_line);
-//                std::cout << "param = " << param << std::endl;
-//                std::cout << "dis = " << dis << std::endl;
-//                std::cout << "left_L_point[i].alpha = " << left_L_point[i].alpha << std::endl;
-//                std::cout << "right_L_point[j].alpha = " << right_L_point[j].alpha << std::endl;
-                if (param < 5 && dis > 90 && dis < 120) //垂直车位
+                std::cout << "param = " << param << std::endl;
+                std::cout << "dis = " << dis << std::endl;
+                std::cout << "left_L_point[i].alpha = " << left_L_point[i].alpha << std::endl;
+                std::cout << "right_L_point[j].alpha = " << right_L_point[j].alpha << std::endl;
+
+                if (left_L_point[i].alpha < 70)
+                {
+                    std::cout << "left_L_point[i].vertical_line[0] = " << left_L_point[i].vertical_line[0] << std::endl;
+                    std::cout << "left_L_point[i].vertical_line[1] = " << left_L_point[i].vertical_line[1] << std::endl;
+                    std::cout << "left_L_point[i].vertical_line[2] = " << left_L_point[i].vertical_line[2] << std::endl;
+                    std::cout << "left_L_point[i].vertical_line[3] = " << left_L_point[i].vertical_line[3] << std::endl;
+
+                }
+
+
+                if (param < 5 && dis > 90 && dis < 130) //垂直车位
                 {
                     parking_space_type pst;
                     pst.left_point = left_L_point[i];

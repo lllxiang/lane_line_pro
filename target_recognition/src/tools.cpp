@@ -820,47 +820,49 @@ bool classify_hough_lines(std::vector<cv::Vec4f> & plines,
 
         if (alpha >= 45 && alpha <= 135) //左右矩形
         {
-            std::cout << "alpha= " << alpha << std::endl;
+            //std::cout << "***************" << std::endl;
+            //std::cout << "alpha= " << alpha << std::endl;
             cv::Point2f midp((line[0]+line[2])/2,(line[1]+line[3])/2);
-            if (1)
+            //std::cout << "midp= " << midp << std::endl;
+            r255_1 = calu_255r_in_v_line(line,
+                                img_ps_mask_ipm,
+                                midp,
+                                5, 3);
+            r255_2 = calu_255r_in_v_line(line,
+                                         img_ps_mask_ipm,
+                                         midp,
+                                         5, 4);
+            if (debug)
             {
                 cv::circle(img_ps_mask_ipm3c, midp,2 ,cv::Scalar(0,0,255),-1,8,0);
                 cv::imshow("img_ps_mask_ipm3c", img_ps_mask_ipm3c);
                 cv::waitKey(0);
+                std::cout << "r255_1= " << r255_1 << std::endl;
+                std::cout << "r255_2= " << r255_2 << std::endl;
             }
 
-            r255_1 = calu_255r_in_v_line(line,
-                                img_ps_mask_ipm,
-                                midp,
-                                10, 3);
-            r255_2 = calu_255r_in_v_line(line,
-                                         img_ps_mask_ipm,
-                                         midp,
-                                         10, 4);
-            std::cout << "r255_1= " << r255_1 << std::endl;
-            std::cout << "r255_2= " << r255_2 << std::endl;
             bool is_pos = 0;
-            if (r255_1 < 0.5 && r255_2 > 0.5)
+            if (r255_1 < 0.5 && r255_2 > 0.7)
             {
                 //pos候选，需要进一步确定(U型引导线会出现伪pos或者neg)
                 r255_1 = calu_255r_in_v_line(line,
                                              img_ps_mask_ipm,
                                              midp,
-                                             40, 3);
-                std::cout << "pos 确认 r255_1= " << r255_1 << std::endl;
+                                             20, 3);
+                //std::cout << "pos 确认 r255_1= " << r255_1 << std::endl;
                 if (r255_1 < 0.2)  //pos neg的右矩形 255占比应该极小
                 {
                     is_pos = 1;
                     pos_lines.push_back(lin);
                 }
             }
-            if (r255_1 > 0.5 && r255_2 < 0.5) //neg候选
+            if (r255_1 > 0.5 && r255_2 < 0.7) //neg候选
             {
                 r255_2 = calu_255r_in_v_line(line,
                                              img_ps_mask_ipm,
                                              midp,
-                                             40, 4); //20cm
-                std::cout << "neg 确认 r255_2= " << r255_2 << std::endl;
+                                             20, 4); //20cm
+                //std::cout << "neg 确认 r255_2= " << r255_2 << std::endl;
                 if(r255_2 < 0.2)
                 {
                     is_pos = 0;
@@ -875,7 +877,6 @@ bool classify_hough_lines(std::vector<cv::Vec4f> & plines,
                     cv::circle(img_ps_mask_ipm3c, pts[i], 3, cv::Scalar(255, 0, 0), -1, 8, 0);
                     cv::imshow("img_ps_mask_ipm3c", img_ps_mask_ipm3c);
                 }
-                std::cout << "***************" << std::endl;
                 std::cout << "r255_1= " << r255_1 << std::endl;
                 std::cout << "r255_2= " << r255_2 << std::endl;
 
@@ -1141,6 +1142,7 @@ int find_separating_line_end_point(std::vector<cv::Vec6f> & pos_separating_lines
                                    std::vector<cv::Vec6f> & pos_separating_lines_dst,
                                    std::vector<L_shape_type> & L_point)
 {
+    bool debug = 0;
     pos_separating_lines_dst.clear();
     L_point.clear();
 
@@ -1156,13 +1158,14 @@ int find_separating_line_end_point(std::vector<cv::Vec6f> & pos_separating_lines
 
         if (alpha > 45 && alpha < 135) //左右搜索
         {
-
-            std::cout << "alpha= " << alpha <<  std::endl;
-            for (int j = 0; j < 6; ++j)
+            if (debug)
             {
-                std::cout << "line[] = "<<j<<"=" << line[j]  <<  std::endl;
+                std::cout << "alpha= " << alpha <<  std::endl;
+                for (int j = 0; j < 6; ++j)
+                {
+                    std::cout << "line[] = "<<j<<"=" << line[j]  <<  std::endl;
+                }
             }
-
             for(int y = line[1]; y < 300; y++)
             {
                 double x =  line[4] * y + line[5]; // kx+b
@@ -1181,11 +1184,11 @@ int find_separating_line_end_point(std::vector<cv::Vec6f> & pos_separating_lines
                 {
                     line[0] = x; line[1] = y; //终端坐标
                     //判断分割线是否完整(只有完整的分割线才push_back)
-                    int d_dis = 20; //线终端距离 边缘10cm以上才认为完整
+                    int d_dis = 10; //线终端距离 边缘10cm以上才认为完整
                     double d_y = y + d_dis;
                     double d_x = line[4] * d_y + line[5];
                     uchar value = img_ps_bgr_ipm.at<cv::Vec3b>(y + d_dis, x)[0];
-                    if (1)
+                    if (value)
                     {
                         pos_separating_lines_dst.push_back(line);
                         L_shape_type t_L; //右角点
@@ -1217,7 +1220,21 @@ int find_separating_line_end_point(std::vector<cv::Vec6f> & pos_separating_lines
                 if (r_top < 0.05 && r_bottom < 0.05)
                 {
                     line[0] = x; line[1] = y;
-                    pos_separating_lines_dst.push_back(line);
+                    //判断分割线是否完整(只有完整的分割线才push_back)
+                    int d_dis = 10; //线终端距离 边缘10cm以上才认为完整
+                    double d_x = x + d_dis;
+                    double d_y = line[4] * d_x + line[5];
+                    uchar value = img_ps_bgr_ipm.at<cv::Vec3b>(d_y, d_x)[0];
+                    if (value)
+                    {
+                       // pos_separating_lines_dst.push_back(line);
+                        L_shape_type t_L;
+                        t_L.alpha = alpha;
+                        t_L.vertical_line = line;
+                        t_L.point_L = cv::Point2f(x,y);
+                        //L_point.push_back(t_L);
+                    }
+                    //pos_separating_lines_dst.push_back(line);
                     break;
                 }
             }
@@ -1241,7 +1258,21 @@ int find_separating_line_end_point(std::vector<cv::Vec6f> & pos_separating_lines
                 if (r_top < 0.05 && r_bottom < 0.05)
                 {
                     line[0] = x; line[1] = y;
-                    pos_separating_lines_dst.push_back(line);
+                    //判断分割线是否完整(只有完整的分割线才push_back)
+                    int d_dis = 10; //线终端距离 边缘10cm以上才认为完整
+                    double d_x = x - d_dis;
+                    double d_y = line[4] * d_x + line[5];
+                    uchar value = img_ps_bgr_ipm.at<cv::Vec3b>(d_y, d_x)[0];
+                    if (value)
+                    {
+                        //pos_separating_lines_dst.push_back(line);
+                        L_shape_type t_L;
+                        t_L.alpha = alpha;
+                        t_L.vertical_line = line;
+                        t_L.point_L = cv::Point2f(x,y);
+                        //L_point.push_back(t_L);
+                    }
+                    //pos_separating_lines_dst.push_back(line);
                     break;
                 }
             }
@@ -1702,8 +1733,11 @@ double calu_255r_in_v_line(cv::Vec6f & line,
             //std:: cout << "calu_dis_2point2f(pt, endp)" << calu_dis_2point2f(pt, endp) << std::endl;
             if (calu_dis_2point2f(pt, endp)  < d) //搜索范围内
             {
+
+
                 if (im.at<uchar>(y,x) == 0)
                 {
+                    //std:: cout << "im.at<uchar>(y,x) = 0"<< std::endl;
                     sum_0 ++;
                 }
                 else

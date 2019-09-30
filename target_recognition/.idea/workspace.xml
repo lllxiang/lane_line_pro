@@ -20,37 +20,18 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DockManager">
-    <window id="2">
-      <content type="file-editors">
-        <state>
-          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file leaf-file-name="tools.cpp" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src/tools.cpp">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-198">
-                    <caret line="795" column="18" selection-start-line="795" selection-start-column="17" selection-end-line="795" selection-end-column="18" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FavoritesManager">
     <favorites_list name="ipm" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.58798885">
+    <splitter split-orientation="horizontal" split-proportion="0.3140496">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="detect_parking_space.h" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/include/detect_parking_space.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="283">
+                <state relative-caret-position="378">
                   <caret line="21" column="12" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
                 </state>
               </provider>
@@ -59,8 +40,8 @@
           <file leaf-file-name="detect_parking_space.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/detect_parking_space.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="416">
-                  <caret line="261" column="12" selection-start-line="261" selection-start-column="12" selection-end-line="261" selection-end-column="12" />
+                <state relative-caret-position="468">
+                  <caret line="188" column="1" selection-start-line="188" selection-start-column="1" selection-end-line="188" selection-end-column="1" />
                   <folding>
                     <element signature="e#36#69#0" expanded="true" />
                   </folding>
@@ -71,8 +52,8 @@
           <file leaf-file-name="ReadParams.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ReadParams.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="38">
-                  <caret line="82" column="111" selection-start-line="82" selection-start-column="111" selection-end-line="82" selection-end-column="111" />
+                <state relative-caret-position="441">
+                  <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
                 </state>
               </provider>
             </entry>
@@ -111,8 +92,8 @@
           <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="455">
-                  <caret line="169" column="23" lean-forward="true" selection-start-line="169" selection-start-column="23" selection-end-line="169" selection-end-column="23" />
+                <state relative-caret-position="334">
+                  <caret line="122" selection-start-line="122" selection-end-line="122" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -123,11 +104,8 @@
           <file leaf-file-name="tools.h" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/include/tools.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="579">
-                  <caret line="355" column="13" selection-start-line="355" selection-start-column="13" selection-end-line="355" selection-end-column="13" />
-                  <folding>
-                    <element signature="e#107#135#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="230">
+                  <caret line="10" selection-start-line="10" selection-end-line="10" selection-end-column="23" />
                 </state>
               </provider>
             </entry>
@@ -147,13 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>img_hough_lines_ipm</find>
-      <find>dst</find>
-      <find>get_rect_points</find>
-      <find>pos_separating_lines</find>
-      <find>img_lines_fitting</find>
-      <find>neg_separating_lines_dst</find>
-      <find>pos_separating_lines_dst</find>
       <find>img_ps_bgr_ipm</find>
       <find>r_left</find>
       <find>calu_255r_in_v_line</find>
@@ -177,6 +148,13 @@
       <find>H</find>
       <find>.H</find>
       <find>H_inv</find>
+      <find>line[]</find>
+      <find>imgrear_distorted_dir_base</find>
+      <find>imgrear_pred_dir</find>
+      <find>img_pred_dir</find>
+      <find>img_distorted_dir</find>
+      <find>intrinsicFileName_left</find>
+      <find>img_distorted_dir_base</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -197,9 +175,9 @@
         <option value="$PROJECT_DIR$/src/detect_line_space.cpp" />
         <option value="$PROJECT_DIR$/include/detect_parking_space.h" />
         <option value="$PROJECT_DIR$/include/tools.h" />
+        <option value="$PROJECT_DIR$/src/tools.cpp" />
         <option value="$PROJECT_DIR$/src/detect_parking_space.cpp" />
         <option value="$PROJECT_DIR$/src/main.cpp" />
-        <option value="$PROJECT_DIR$/src/tools.cpp" />
       </list>
     </option>
   </component>
@@ -214,17 +192,16 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1520" />
+    <option name="x" value="1419" />
     <option name="y" value="-4" />
-    <option name="width" value="1695" />
-    <option name="height" value="1230" />
+    <option name="width" value="2507" />
+    <option name="height" value="1444" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -251,6 +228,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -260,7 +238,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../dedistortion_imgs" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -365,12 +343,14 @@
       <workItem from="1569466449500" duration="14333000" />
       <workItem from="1569485559269" duration="23448000" />
       <workItem from="1569572813583" duration="6800000" />
-      <workItem from="1569651781403" duration="8432000" />
+      <workItem from="1569651781403" duration="15482000" />
+      <workItem from="1569748746091" duration="7395000" />
+      <workItem from="1569811168894" duration="6160000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="605911000" />
+    <option name="totallyTimeSpent" value="626516000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -386,16 +366,16 @@
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.045916293" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.70569104" visible="true" weight="0.081267774" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.70542634" visible="true" weight="0.11824462" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32945737" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.3379845" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.2643411" />
       <window_info anchor="bottom" id="CMake" order="7" weight="0.32945737" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5232558" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.23333333" />
       <window_info id="Structure" order="1" sideWeight="0.28303656" side_tool="true" weight="0.1275904" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.1" />
-      <window_info id="Favorites" order="2" sideWeight="0.29430893" side_tool="true" visible="true" weight="0.081267774" />
+      <window_info id="Favorites" order="2" sideWeight="0.29457363" side_tool="true" visible="true" weight="0.11824462" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.35271317" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -438,17 +418,12 @@
       <breakpoints>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>208</line>
-          <option name="timeStamp" value="259" />
-        </line-breakpoint>
-        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>214</line>
+          <line>148</line>
           <option name="timeStamp" value="260" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/detect_parking_space.cpp</url>
-          <line>401</line>
+          <line>412</line>
           <option name="timeStamp" value="296" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -568,13 +543,8 @@
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>229</line>
+          <line>153</line>
           <option name="timeStamp" value="334" />
-        </line-breakpoint>
-        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>228</line>
-          <option name="timeStamp" value="364" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/include/tools.h</url>
@@ -583,148 +553,143 @@
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>197</line>
+          <line>136</line>
           <option name="timeStamp" value="396" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>180</line>
+          <line>113</line>
           <option name="timeStamp" value="397" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>181</line>
+          <line>114</line>
           <option name="timeStamp" value="398" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>186</line>
+          <line>125</line>
           <option name="timeStamp" value="399" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>187</line>
+          <line>126</line>
           <option name="timeStamp" value="400" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>188</line>
+          <line>127</line>
           <option name="timeStamp" value="401" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/detect_parking_space.cpp</url>
-          <line>124</line>
+          <line>125</line>
           <option name="timeStamp" value="460" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>947</line>
+          <line>948</line>
           <option name="timeStamp" value="463" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>949</line>
+          <line>950</line>
           <option name="timeStamp" value="464" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>950</line>
+          <line>951</line>
           <option name="timeStamp" value="465" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1003</line>
+          <line>1004</line>
           <option name="timeStamp" value="466" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1004</line>
+          <line>1005</line>
           <option name="timeStamp" value="467" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1005</line>
+          <line>1006</line>
           <option name="timeStamp" value="468" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1037</line>
+          <line>1038</line>
           <option name="timeStamp" value="469" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1038</line>
+          <line>1039</line>
           <option name="timeStamp" value="470" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1040</line>
+          <line>1041</line>
           <option name="timeStamp" value="471" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1044</line>
+          <line>1045</line>
           <option name="timeStamp" value="472" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1045</line>
+          <line>1046</line>
           <option name="timeStamp" value="473" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1046</line>
+          <line>1047</line>
           <option name="timeStamp" value="474" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1060</line>
+          <line>1061</line>
           <option name="timeStamp" value="475" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1061</line>
+          <line>1062</line>
           <option name="timeStamp" value="476" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1066</line>
+          <line>1067</line>
           <option name="timeStamp" value="477" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1065</line>
+          <line>1066</line>
           <option name="timeStamp" value="478" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1675</line>
+          <line>1706</line>
           <option name="timeStamp" value="499" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1696</line>
-          <option name="timeStamp" value="528" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1702</line>
-          <option name="timeStamp" value="529" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1704</line>
+          <line>1737</line>
           <option name="timeStamp" value="530" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1706</line>
+          <line>1740</line>
           <option name="timeStamp" value="531" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/tools.cpp</url>
-          <line>1710</line>
+          <line>1744</line>
           <option name="timeStamp" value="532" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/main.cpp</url>
+          <line>73</line>
+          <option name="timeStamp" value="536" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -737,7 +702,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="535" />
+      <option name="time" value="537" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -1039,54 +1004,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ReadParams.cpp">
+    <entry file="file://$PROJECT_DIR$/include/detect_parking_space.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="82" column="111" selection-start-line="82" selection-start-column="111" selection-end-line="82" selection-end-column="111" />
+        <state relative-caret-position="378">
+          <caret line="21" column="12" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tools.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="1279" column="5" selection-start-line="1279" selection-start-column="5" selection-end-line="1279" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/tools.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="579">
-          <caret line="355" column="13" selection-start-line="355" selection-start-column="13" selection-end-line="355" selection-end-column="13" />
-          <folding>
-            <element signature="e#107#135#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="230">
+          <caret line="10" selection-start-line="10" selection-end-line="10" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/detect_parking_space.h">
+    <entry file="file://$PROJECT_DIR$/src/ReadParams.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="21" column="12" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="169" column="23" lean-forward="true" selection-start-line="169" selection-start-column="23" selection-end-line="169" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="441">
+          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/detect_parking_space.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="261" column="12" selection-start-line="261" selection-start-column="12" selection-end-line="261" selection-end-column="12" />
+        <state relative-caret-position="468">
+          <caret line="188" column="1" selection-start-line="188" selection-start-column="1" selection-end-line="188" selection-end-column="1" />
           <folding>
             <element signature="e#36#69#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tools.cpp">
+    <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-198">
-          <caret line="795" column="18" selection-start-line="795" selection-start-column="17" selection-end-line="795" selection-end-column="18" />
+        <state relative-caret-position="334">
+          <caret line="122" selection-start-line="122" selection-end-line="122" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

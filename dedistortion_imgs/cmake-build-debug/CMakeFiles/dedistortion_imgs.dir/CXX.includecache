@@ -6,6 +6,16 @@
 
 #IncludeRegexTransform: 
 
+.././include/ReadParams.h
+opencv2/opencv.hpp
+-
+iostream
+-
+fstream
+-
+string
+-
+
 /home/lx/CLionProjects/lane_line_postprocessing/dedistortion_imgs/src/main.cpp
 stdio.h
 -
@@ -17,6 +27,8 @@ iostream
 -
 opencv2/opencv.hpp
 -
+ReadParams.h
+/home/lx/CLionProjects/lane_line_postprocessing/dedistortion_imgs/src/ReadParams.h
 
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h
