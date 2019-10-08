@@ -88,6 +88,9 @@ struct L_shape_type
     cv::Point2f point_end; //L角点 沿着引导线 终端坐标
 };
 
+
+
+
 struct  parking_space_type
 {
     double e; //置信度
@@ -179,7 +182,8 @@ double calu_dis_2lines_m2(cv::Vec6f & line1, cv::Vec6f & line2);
 
 double calu_dis_2point(cv::Point &p1, cv::Point &p2);
 double calu_dis_2point2f(cv::Point2f &p1, cv::Point2f &p2);
-cv::Point2f calu_cutpoint_2lines(cv::Vec6f & line1, cv::Vec6f & line2);
+cv::Point2f calu_intersection_point_2lines(cv::Vec6f & line1, cv::Vec6f & line2);
+cv::Point2f calu_intersection_point_2lines(cv::Vec4f & line1, cv::Vec4f & line2);
 cv::Point2f calu_point_2lines(cv::Vec6f & line1, cv::Vec6f & line2);
 
 
@@ -256,6 +260,11 @@ bool find_Lshape_point(std::vector<cv::Vec6f> & pos_separating_lines,
                        std::vector<parking_space_line_type> & stop_line,
                        double line_alpha_error,
                        std::vector<L_shape_type> & L_shapes);
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * std::string 分割
+ * * * * * * * * * * * * * * * * * * * * * * * * * * */
+std::vector<std::string> string_split(const std::string &s, const std::string &seperator);
 
 /*
  * 在分隔线集合中确定L角点

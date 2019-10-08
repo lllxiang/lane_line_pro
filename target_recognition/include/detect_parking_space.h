@@ -13,7 +13,7 @@ public:
      ~parking_space();
     void show2();
     int detect_test();
-
+    int detect_closeed_ps();
 
     cv::Mat H;
     cv::Mat H_inv;
@@ -50,7 +50,7 @@ public:
 
 
 
-
+    std::string perspectiveFileName_left;
     std::vector<cv::Vec4f> plines_combined;          //
     std::vector<std::vector<cv::Vec4f>> separating_lines; //separating_lines
 

@@ -385,8 +385,8 @@ bool img_undistort2topview(cv::Mat & inter_params,
         H = cv::findHomography( points_undistort, wordPoints2D);
         cv::Mat H_inv = cv::findHomography( wordPoints2D, points_undistort);
 
-       // std::cout<<"H"<<H<<std::endl;
-        //std::cout<<"H_inv"<<H_inv<<std::endl;
+        std::cout<<"H"<<H<<std::endl;
+        std::cout<<"H_inv"<<H_inv<<std::endl;
 
         cv::warpPerspective(img_undistorted, img_ipm, H, ipm_size);
     }
@@ -1136,6 +1136,45 @@ bool find_end_point(std::vector<cv::Vec6f> & pos_separating_lines,
     return 0;
 }
 
+std::vector<std::string> string_split(const std::string &s, const std::string &seperator){
+    std::vector<std::string> result;
+    typedef std::string::size_type string_size;
+    string_size i = 0;
+    while(i != s.size()){
+        int flag = 0;
+        while(i != s.size() && flag == 0)
+        {
+            flag = 1;
+            for(string_size x = 0; x < seperator.size(); ++x)
+            {
+                if(s[i] == seperator[x])
+                {
+                    ++i;
+                    flag = 0;
+                    break;
+                }
+            }
+        }
+        flag = 0;
+        string_size j = i;
+        while(j != s.size() && flag == 0){
+            for(string_size x = 0; x < seperator.size(); ++x) {
+                if (s[j] == seperator[x]) {
+                    flag = 1;
+                    break;
+                }
+            }
+            if(flag == 0)
+                ++j;
+        }
+        if(i != j){
+            result.push_back(s.substr(i, j-i));
+            i = j;
+        }
+    }
+    return result;
+}
+
 int find_separating_line_end_point(std::vector<cv::Vec6f> & pos_separating_lines,
                                    cv::Mat & img_ps_mask_ipm,
                                    cv::Mat & img_ps_bgr_ipm,
@@ -1365,7 +1404,7 @@ bool find_stop_lines(std::vector<cv::Vec6f> & pos_separating_lines,
     return 1;
 }
 
-cv::Point2f calu_cutpoint_2lines(cv::Vec6f & line1, cv::Vec6f & line2)
+cv::Point2f calu_intersection_point_2lines(cv::Vec6f & line1, cv::Vec6f & line2)
 {
     double x1 = line1[0];
     double y1 = line1[1];
@@ -1385,7 +1424,26 @@ cv::Point2f calu_cutpoint_2lines(cv::Vec6f & line1, cv::Vec6f & line2)
 
     return cv::Point2f(D1/(D+1e-20),D2/(D+1e-20));
 }
+cv::Point2f calu_intersection_point_2lines(cv::Vec4f & line1, cv::Vec4f & line2)
+{
+    double x1 = line1[0];
+    double y1 = line1[1];
+    double x2 = line1[2];
+    double y2 = line1[3];
 
+    double x3 = line2[0];
+    double y3 = line2[1];
+    double x4 = line2[2];
+    double y4 = line2[3];
+
+    double b1 = (y2-y1)*x1+(x1-x2)*y1;
+    double b2 = (y4-y3)*x3+(x3-x4)*y3;
+    double D= (x2-x1)*(y4-y3)-(x4-x3)*(y2-y1);
+    double D1=b2*(x2-x1)-b1*(x4-x3);
+    double D2=b2*(y2-y1)-b1*(y4-y3);
+
+    return cv::Point2f(D1/(D+1e-20),D2/(D+1e-20));
+}
 
 bool find_Lshape_point(std::vector<cv::Vec6f> & pos_separating_lines,
                        std::vector<cv::Vec6f> & neg_separating_lines,
@@ -1421,7 +1479,7 @@ bool find_Lshape_point(std::vector<cv::Vec6f> & pos_separating_lines,
                 t.point_type = 1;
                 t.stop_line = stop_line[i];
                 t.vertical_line = pos_separating_lines[j];
-                t.point_L = calu_cutpoint_2lines(stop_line[i].pos_line, pos_separating_lines[j]); //计算交点坐标
+                t.point_L = calu_intersection_point_2lines(stop_line[i].pos_line, pos_separating_lines[j]); //计算交点坐标
                 L_shapes.push_back(t);
             }
             else if (alpha_L > 54-line_alpha_error && alpha_L < 54+line_alpha_error)
@@ -1461,7 +1519,7 @@ bool find_Lshape_point(std::vector<cv::Vec6f> & pos_separating_lines,
                 t.point_type = 2;
                 t.stop_line = stop_line[i];
                 t.vertical_line = neg_separating_lines[k];
-                t.point_L = calu_cutpoint_2lines(stop_line[i].pos_line, neg_separating_lines[k]); //计算交点坐标
+                t.point_L = calu_intersection_point_2lines(stop_line[i].pos_line, neg_separating_lines[k]); //计算交点坐标
                 L_shapes.push_back(t);
             }
             else if (alpha_L > 54-line_alpha_error && alpha_L < 54+line_alpha_error)
@@ -1587,7 +1645,7 @@ bool find_ps_in_L_shape_points(std::vector<L_shape_type> & L_shapes,
 
 }
 
-int find_hough_lines_set(cv::Mat & img_ps_mask,
+int find_hough_lines_set(cv::Mat & img_ps_mask, cv::Mat & img_bgr,
                          std::vector<cv::Vec4f> & hough_lines)
 {
     //输入二值化图，返回直线集
@@ -1603,7 +1661,7 @@ int find_hough_lines_set(cv::Mat & img_ps_mask,
     cv::Mat timg = img_ps_mask.clone();
     std::vector<cv::Vec4i> hierarchy;
     std::vector<std::vector<cv::Point>> contours;             //原始轮廓
-    cv::findContours(timg(cv::Rect(roi_x,roi_y,roi_w,roi_h)), contours, hierarchy, cv::RETR_EXTERNAL,
+    cv::findContours(timg(cv::Rect(roi_x,roi_y,roi_w,roi_h)), contours, hierarchy, cv::RETR_LIST,
                      cv::CHAIN_APPROX_NONE );
 
     //hough变换图像
@@ -1620,35 +1678,52 @@ int find_hough_lines_set(cv::Mat & img_ps_mask,
 
     //hough transform
     hough_lines.clear();
-
-    cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_NONE);
     double start = static_cast<double>(cvGetTickCount());
     cv::HoughLinesP(img_t(cv::Rect(roi_x,roi_y,roi_w,roi_h)), hough_lines, 1, CV_PI / 180,
-                    30,  // 判断直线的点数阈值
+                    20,  // 判断直线的点数阈值
                     10,   //线段长度阈值
-                    10      //线段上最近两点之间的阈值
+                    5      //线段上最近两点之间的阈值
     );
+//    std::vector<cv::Vec2f> lines_2f;
+//    cv::HoughLines(img_t(cv::Rect(roi_x,roi_y,roi_w,roi_h)), lines_2f, 1, CV_PI/180, 50);
+//    for( size_t i = 0; i < lines_2f.size(); i++ )
+//    {
+//        float rho = lines_2f[i][0];
+//        float theta = lines_2f[i][1];
+//        double a = cos(theta), b = sin(theta);
+//        double x0 = a*rho, y0 = b*rho;
+//        cv::Point pt1(cvRound(x0 + 1000*(-b)),
+//                  cvRound(y0 + 1000*(a)));
+//        cv::Point pt2(cvRound(x0 - 1000*(-b)),
+//                  cvRound(y0 - 1000*(a)));
+//        line( img_bgr, pt1, pt2, cv::Scalar(0,0,255), 1, 8 );
+//    }
+
+    cv::imshow("img_t",img_t );
+    //cv::imshow("img_bgr",img_bgr );
+    cv::waitKey(0);
+
     double time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
     std::cout << "1->hough 边缘检测耗时:" << time/1000<<"ms"<<std::endl;
 
-    for(int i=0; i< hough_lines.size(); i++)
-    {
-        hough_lines[i][0] = hough_lines[i][0] + roi_x;
-        hough_lines[i][2] = hough_lines[i][2] + roi_x;
-    }
+//    for(int i=0; i< hough_lines.size(); i++)
+//    {
+//        hough_lines[i][0] = hough_lines[i][0] + roi_x;
+//        hough_lines[i][2] = hough_lines[i][2] + roi_x;
+//    }
 
     return hough_points; //the number of points of hough transform
 }
 
-int find_hough_lines_set(cv::Mat & img_ps_mask,
-                         cv::Mat & ipm_mat,
-                         std::vector<cv::Vec4f> & hough_lines)
-{
-
-
-
-
-}
+//int find_hough_lines_set(cv::Mat & img_ps_mask,
+//                         cv::Mat & ipm_mat,
+//                         std::vector<cv::Vec4f> & hough_lines)
+//{
+//
+//
+//
+//
+//}
 
 int  perspective_transform_lines(std::vector<cv::Vec4f> &src,
                                  std::vector<cv::Vec4f> &dst,

@@ -18,10 +18,11 @@ const double car_weight = 193.2;    //Vehicle width
 const double car_zhouju = 187.5;    // Vehicle wheelbase
 const double view_dis = 800.0;      //view distance 800cm
 
+
 int main() {
-    int camera_type_id = 0;         //定义相机类型1 锐尔威视，  0 森云
+    int camera_type_id = 0;         //定义相机类型1 锐尔威视，  0森云
     int is_test = 1;                //1--测评   0--检测
-    int seq_id = 1;                 //测评时序列
+    int seq_id = 2;                 //测评时序列
 
     std::string img_base_dir;
     std::string param_base_dir = "/home/lx/data/suround_view_src_data/calibration";
@@ -32,7 +33,7 @@ int main() {
 
     if (camera_type_id == 1)
     {
-       //camera_type = "weishi";
+       camera_type = "weishi";
     }
     else
     {
@@ -42,8 +43,8 @@ int main() {
     if(is_test)
     {
         img_base_dir = "/home/lx/data/ceping_data";
-        img_distorted_dir_base = img_base_dir + "/" + camera_type + "/seq" + std::to_string(seq_id) + "/images/";
-        img_undistorted_dir_base = img_base_dir + "/" + camera_type + "/seq" + std::to_string(seq_id) + "/dedist_images/";
+        img_distorted_dir_base = img_base_dir + "/" + camera_type + "/seq" + std::to_string(seq_id) + "/distorted_images/";
+        img_undistorted_dir_base = img_base_dir + "/" + camera_type + "/seq" + std::to_string(seq_id) + "/undistorted_images/";
         img_pred_dir_base = img_base_dir + "/" + camera_type + "/seq" + std::to_string(seq_id) + "/label_png_pred/";
     }
     else
@@ -55,12 +56,11 @@ int main() {
     distortionFileName_left = param_base_dir + "/" + camera_type + "/fish4/distortion.txt";
     perspectiveFileName_left = param_base_dir + "/" + camera_type + "/fish4/perspectiveTransformCalibration.txt";
     extrinsicFileName_left = param_base_dir + "/" + camera_type + "/fish4/extrinsic.txt";
+
     intrinsicFileName_rear = param_base_dir + "/" + camera_type + "/fish2/intrinsic.txt";
     distortionFileName_rear = param_base_dir + "/" + camera_type + "/fish2/distortion.txt";
     perspectiveFileName_rear = param_base_dir + "/" + camera_type + "/fish2/perspectiveTransformCalibration.txt";
     extrinsicFileName_rear = param_base_dir + "/" + camera_type + "/fish2/extrinsic.txt";
-
-
 
     //read left camera offline params
     cv::Mat inter_params_left(cv::Size(3, 3), CV_64FC1);
@@ -84,18 +84,11 @@ int main() {
     std::string img_undistorted_dir;
     std::string img_pred_dir;
 
-//    std::string imgrear_distorted_dir;
-//    std::string imgrear_undistorted_dir;
-//    std::string imgrear_pred_dir;
-//    std::string imgrear_distorted_dir_base = "/home/lx/data/surround_line14_test/lednet/10rear/img_distorted/";
-//    std::string imgrear_undistorted_dir_base = "/home/lx/data/surround_line14_test/lednet/10rear/img_undistorted/";
-//    std::string imgrear_pred_dir_base = "/home/lx/data/surround_line14_test/lednet/10rear/img_pred/";
     //all img
     cv::Mat img_distorted;   //畸变图
     cv::Mat img_undistorted;  //去畸变图
     cv::Mat imgrear_distorted;   //畸变图
     cv::Mat imgrear_undistorted;  //去畸变图
-
     cv::Mat img_ipm;
     cv::Mat img_pred;   //预测结果，灰度图
     cv::Mat img_linep; //引导线
@@ -103,108 +96,82 @@ int main() {
 
     int now_n_img = 1;
     int now_frame_count = 1;
-
     parking_space  ps_search; //实例化车位线对象
-    while(now_n_img)
+    struct dirent **dirp;
+    int n_file = scandir(img_pred_dir_base.c_str(), &dirp, 0, alphasort); //预测png图像路径
+    if (n_file < 0)
     {
-        img_distorted_dir = img_distorted_dir_base + "im_" + std::to_string(now_n_img) + ".jpg";
-        img_undistorted_dir = img_undistorted_dir_base + "im_" + std::to_string(now_n_img) + ".jpg";
-        img_pred_dir = img_pred_dir_base + "im_" + std::to_string(now_n_img) + ".png";
-
-        img_distorted = cv::imread(img_distorted_dir);
-        if(img_distorted.empty())
+        std::cout << "no file" << std::endl;
+    }
+    else
+    {
+        int index = 2; //0 1 分别为 . .. dir
+        while(index < n_file)
         {
-            std::cout << "img_distorted read failed!" <<std::endl;
-            now_n_img++;
-            continue;
-        } else{
-            std::cout << "img_distorted read succeed!" <<std::endl;
-            cv::imshow("im", img_distorted);
+            std::string tname = dirp[index]->d_name;
+            free(dirp[index]);
+            index++;
+            std::vector<std::string> names = string_split(tname, ".");
+            std::cout<<"img name now propressed is = " << tname <<std::endl;
+            std::cout<<"img name now propressed is = " << names[0] <<std::endl;
+            std::cout<<"img name now propressed is = " << names[1] <<std::endl;
 
+            img_distorted_dir = img_distorted_dir_base + names[0] + ".jpg";
+            img_undistorted_dir = img_undistorted_dir_base + names[0] + ".jpg";
+            img_pred_dir = img_pred_dir_base + tname;
+
+            img_distorted = cv::imread(img_distorted_dir);
+            img_undistorted = cv::imread(img_undistorted_dir);
+            img_pred = cv::imread(img_pred_dir,cv::IMREAD_GRAYSCALE);
+
+            img_linep = img_pred.clone();   //get_mask_img(img_pred,img_linep, 4);
+            get_mask_img(img_pred,img_linep, 4); //6
+            //IPM
+            img_undistort2topview(inter_params_left, distortion_left,
+                                  rvecs_left, tvecs_left,"left",img_undistorted, img_ipm);
+            img_undistort2topview(inter_params_left, distortion_left,
+                                  rvecs_left, tvecs_left,"left",img_linep, img_linep_ipm);
+
+            //角点检测
+//            std::vector<cv::KeyPoint>detectKeyPoint;
+////            //ORB
+//            auto orb_detector = cv::ORB::create(10,1.2f,2);
+//            //(int nfeatures=500, float scaleFactor=1.2f, int nlevels=8, int edgeThreshold=31,
+//             //       int firstLevel=0, int WTA_K=2, int scoreType=ORB::HARRIS_SCORE, int patchSize=31, int fastThreshold=20);
+//            double start = (double)cvGetTickCount();
+//            orb_detector->detect(img_linep_ipm, detectKeyPoint);
+//            double time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+//            std::cout << "ORB :" << time/1000<<"ms"<<std::endl;
+
+            //FAST
+            //cv::threshold(img_linep_ipm, img_linep_ipm, 200, 255, cv::THRESH_BINARY);
+            //double start = (double)cvGetTickCount();
+            //cv::Ptr<cv::FastFeatureDetector> fast = cv::FastFeatureDetector::create(200,cv::FastFeatureDetector::TYPE_9_16);
+            //fast->detect(img_linep_ipm,detectKeyPoint);
+
+            //double time = ((double)cvGetTickCount() - start) / cvGetTickFrequency();
+            //std::cout << "ORB :" << time/1000<<"ms"<<std::endl;
+
+//            cv::Mat img_linep_ipm_3c;  cv::cvtColor(img_linep_ipm, img_linep_ipm_3c, CV_GRAY2BGR);
+//            cv::drawKeypoints(img_linep_ipm_3c,detectKeyPoint,img_linep_ipm_3c,cv::Scalar(0,0,255),cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+//            cv::imshow("img_linep_ipm", img_linep_ipm);
+//            cv::imshow("img_linep_ipm_3c", img_linep_ipm_3c);
+//            cv::waitKey(0);
+
+            //车位线检测--车位搜索
+            std::cout<<"img name : " << img_undistorted_dir << std::endl;
+
+            ps_search.perspectiveFileName_left = perspectiveFileName_left;
+            ps_search.img_ps_mask = img_linep; //引导线
+            ps_search.img_ps_mask_ipm = img_linep_ipm;
+            ps_search.img_ps_bgr = img_undistorted;
+            ps_search.img_ps_bgr_ipm = img_ipm;
+            if(ps_search.detect_closeed_ps())
+            {
+                break;
+            }
+            ps_search.show2();
         }
-
-        img_undistorted = cv::imread(img_undistorted_dir);
-        img_pred = cv::imread(img_pred_dir, cv::IMREAD_GRAYSCALE);
-        img_linep = img_pred.clone();
-
-        get_mask_img(img_pred,img_linep, 6);
-        img_undistort2topview(inter_params_left, distortion_left,
-                              rvecs_left, tvecs_left,"left",img_undistorted, img_ipm);
-        img_undistort2topview(inter_params_left, distortion_left,
-                              rvecs_left, tvecs_left,"left",img_linep, img_linep_ipm);
-
-        //车位线检测--车位搜索
-        std::cout<<"img name : " << img_undistorted_dir << std::endl;
-        ps_search.frame_count = now_n_img;
-        ps_search.now_frame_count = now_frame_count;
-        ps_search.img_ps_mask = img_linep; //引导线
-        ps_search.img_ps_mask_ipm = img_linep_ipm;
-        ps_search.img_ps_bgr = img_undistorted;
-        ps_search.img_ps_bgr_ipm = img_ipm;
-        if(ps_search.detect_test())
-        {
-            break;
-        }
-        ps_search.show2();
-        now_frame_count+
-        now_n_img++;
-
     }
     return 1;
 }
-
-//    struct dirent *dirp;
-//    DIR *dir = opendir(img_undistorted_dir.c_str());
-//    while ((dirp = readdir(dir)) != NULL)
-//    {
-//        if (dirp->d_type == DT_REG)
-//        {
-//            std::string tname = dirp->d_name;
-//            std::cout<<"img name now propressed is = " << tname <<std::endl;
-//        }
-//    }
-//    int now_n_img = 1;
-//    while(now_n_img+1)
-//    {
-//        img_distorted_dir = img_distorted_dir_base + "im_" + std::to_string(now_n_img) + ".jpg";
-//        img_undistorted_dir = img_undistorted_dir_base + "im_" + std::to_string(now_n_img) + ".jpg";
-//
-//        imgrear_distorted_dir = imgrear_distorted_dir_base + "im_" + std::to_string(now_n_img) + ".jpg";
-//        imgrear_undistorted_dir = imgrear_undistorted_dir_base + "im_" + std::to_string(now_n_img) + ".jpg";
-//        img_pred_dir = imgrear_pred_dir_base + "im_" + std::to_string(now_n_img) + ".png";
-//
-//        img_distorted = cv::imread(img_distorted_dir);
-//        imgrear_distorted = cv::imread(imgrear_distorted_dir);
-//
-//        undistort_fish_img(inter_params_left,distortion_left, 1, 1,cv::Size(640*2, 480*2),img_distorted, img_undistorted);
-//        undistort_fish_img(inter_params_rear,distortion_rear, 1, 1,cv::Size(640*2, 480*2),imgrear_distorted, imgrear_undistorted);
-//
-//        cv::resize(img_undistorted,img_undistorted,cv::Size(640,480));
-//        cv::resize(imgrear_undistorted,imgrear_undistorted,cv::Size(640,480));
-//
-//        cv::Mat img_ipm, imgrear_ipm;
-//        img_undistort2topview(inter_params_rear, distortion_rear,
-//                              rvecs_rear, tvecs_rear,"rear",imgrear_undistorted, imgrear_ipm);
-//
-//        img_undistort2topview(inter_params_left, distortion_left,
-//                              rvecs_left, tvecs_left,"left",img_undistorted, img_ipm);
-//
-//        cv::transpose(imgrear_ipm, imgrear_ipm);
-//        cv::flip(imgrear_ipm,imgrear_ipm,0);
-//
-//        cv::imshow("img_undistorted", img_undistorted);
-//        cv::imshow("img_ipm", img_ipm);
-//
-//        cv::imshow("imgrear_undistorted", imgrear_undistorted);
-//        cv::imshow("imgrear_ipm", imgrear_ipm);
-//
-//        cv::waitKey(0);
-//
-//        now_n_img++;
-//    }
-
-
-
-
-
-
