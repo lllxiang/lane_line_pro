@@ -6,10 +6,9 @@
 #include "ReadParams.h"
 
 int getCameraParams(cv::Mat & cameraMatrix, cv::Mat & dst_cameraMatrix,
-  cv::Mat & distCoeffs,std::string flag, double rx, double ry);
+                    cv::Mat & distCoeffs,std::string flag, double rx, double ry,double cx,double cy);
 int getCameraParams_senyun(cv::Mat & cameraMatrix, cv::Mat & dst_cameraMatrix,
-                    cv::Mat & distCoeffs,std::string flag, double rx, double ry,
-                    double cx,double cy);
+                    cv::Mat & distCoeffs,std::string flag, double rx, double ry, double cx,double cy);
 
 int main(int argc, const char * argv[]) {
 
@@ -17,41 +16,47 @@ int main(int argc, const char * argv[]) {
     cv::Mat dst_cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
     cv::Mat distCoeffs = cv::Mat::zeros(4, 1, CV_64F);
     std::string which_video = "10rear";
-    std::string base_dir = "/home/lx/data/ceping_data/senyun/seq5/";
+    std::string base_dir = "/home/lx/data/surround_line14_test/lednet/all_left";
     std::string video_dir = "/home/lx/data/surround_line14_test/lednet/" + which_video + "/10rear.avi";
-    std::string img_distorted_dir = base_dir + "/imgs/";
-    std::string img_undistorted_dir = base_dir + "/dedist_imgs/";
+    std::string img_distorted_dir = base_dir + "/img_distorted/";
+    std::string img_undistorted_dir = base_dir + "/img_undistorted/";
 
     cv::VideoCapture cap(video_dir);
     cv::Size imageSize(640, 480);
     cv::Mat map_x, map_y;
     cv::Mat frame, dst;
     int n = 0;
+    int every_m = 3; //抽帧间隔
     bool isVideo = 0;
     struct dirent *dirp;
     DIR *dir = opendir(img_distorted_dir.c_str());
-    getCameraParams_senyun(cameraMatrix, dst_cameraMatrix,
+    getCameraParams(cameraMatrix, dst_cameraMatrix,
                     distCoeffs, "ft", 1, 1,1,1); //left
     cv::fisheye::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
                                          cameraMatrix, imageSize, CV_32FC1, map_x, map_y);
+
     if (isVideo)
     {
         while (cap.isOpened())
         {
             cap.read(frame);
             getCameraParams(cameraMatrix, dst_cameraMatrix,
-                            distCoeffs, "ar", 1, 1); //left
+                            distCoeffs, "ar", 1, 1,1,1); //left
             cv::fisheye::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(),
                                                  cameraMatrix, imageSize, CV_32FC1, map_x, map_y);
             cv::remap(frame, dst, map_x, map_y, cv::INTER_LINEAR);
-
-            cv::imwrite("/home/lx/data/surround_line14_test/lednet/" + which_video + "/img_undistorted/im_" + std::to_string(n) + ".jpg", dst);
-            cv::imwrite("/home/lx/data/surround_line14_test/lednet/" + which_video + "/img_distorted/im_" + std::to_string(n) + ".jpg", frame);
-
+            if(every_m % 3 == 0)
+            {
+                cv::imwrite("/home/lx/data/surround_line14_test/lednet/" + which_video + "/img_undistorted/im_" +
+                            std::to_string(n) + ".jpg", dst);
+                cv::imwrite("/home/lx/data/surround_line14_test/lednet/" + which_video + "/img_distorted/im_" +
+                            std::to_string(n) + ".jpg", frame);
+            }
             cv::imshow("frame", frame);
             cv::imshow("dst", dst);
             cv::waitKey(1);
             n++;
+            every_m++;
         }
 
     }
@@ -166,7 +171,7 @@ int main(int argc, const char * argv[]) {
 
 
 int getCameraParams(cv::Mat & cameraMatrix, cv::Mat & dst_cameraMatrix,
-  cv::Mat & distCoeffs,std::string flag, double rx, double ry)
+  cv::Mat & distCoeffs,std::string flag, double rx, double ry,double cx,double cy)
 {
   cv::Mat tcameraMatrix = cv::Mat::eye(3, 3, CV_64F);
   cv::Mat t_dst_cameraMatrix = cv::Mat::eye(3, 3, CV_64F);

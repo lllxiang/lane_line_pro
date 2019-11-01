@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/c_fun.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+
+/home/lx/CLionProjects/find_edges/src/c_fun.c
+c_fun.h
+/home/lx/CLionProjects/find_edges/src/c_fun.h
+

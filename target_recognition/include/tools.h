@@ -88,6 +88,13 @@ struct L_shape_type
     cv::Point2f point_end; //L角点 沿着引导线 终端坐标
 };
 
+struct canditate_L_shape_type
+{
+    float e; //置信度
+    cv::Vec6f line1;
+    cv::Vec6f line2;
+    cv::Point2f pt;  //交点
+};
 
 
 
@@ -155,6 +162,7 @@ bool img_undistort2topview(cv::Mat & inter_params,
                            cv::Mat & rvecs,
                            cv::Mat & tvecs,
                            std::string direction,
+                           std::string camera_type,
                            cv::Mat & img_undistorted,
                            cv::Mat & img_ipm);
 
@@ -182,6 +190,7 @@ double calu_dis_2lines_m2(cv::Vec6f & line1, cv::Vec6f & line2);
 
 double calu_dis_2point(cv::Point &p1, cv::Point &p2);
 double calu_dis_2point2f(cv::Point2f &p1, cv::Point2f &p2);
+//计算直线
 cv::Point2f calu_intersection_point_2lines(cv::Vec6f & line1, cv::Vec6f & line2);
 cv::Point2f calu_intersection_point_2lines(cv::Vec4f & line1, cv::Vec4f & line2);
 cv::Point2f calu_point_2lines(cv::Vec6f & line1, cv::Vec6f & line2);
@@ -211,7 +220,14 @@ double calu_alpha_line(cv::Vec6f & line, bool is_);
 double calu_para_2lines(cv::Vec4f & line1, cv::Vec4f & line2);
 double calu_para_2lines(cv::Vec6f & line1, cv::Vec6f & line2);
 
-//对hough结果的线, 判断pos 或 neg 性
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+* input
+* std::vector<cv::Vec4f> & plines 透视图中hough直线段
+* std::vector<cv::Vec4f> & plines_ipm 俯视图中hough直线段
+* cv::Mat & img_pred 俯视图分割结果 , 二值化图
+* output
+* std::vector<cv::Vec4f> & pos_lines 正线段集合
+* * * * * * * * * * * * * * * * * * * * * * * * * * */
 bool classify_hough_lines(std::vector<cv::Vec4f> & plines,
                           std::vector<cv::Vec4f> & plines_ipm,
                             cv::Mat & img_pred,
@@ -219,6 +235,15 @@ bool classify_hough_lines(std::vector<cv::Vec4f> & plines,
                             double black_t, //0值比例阈值
                             std::vector<cv::Vec4f> & pos_lines,
                             std::vector<cv::Vec4f> & neg_lines);
+
+//根据直线在透视图的关系判断正负性
+bool classify_hough_lines_p(std::vector<cv::Vec4f> & plines,
+                          std::vector<cv::Vec4f> & plines_ipm,
+                          cv::Mat & img_pred,
+                          int search_len,
+                          double black_t, //0值比例阈值
+                          std::vector<cv::Vec4f> & pos_lines,
+                          std::vector<cv::Vec4f> & neg_lines);
 /*
 查找潜在的车位停止线
 input: pos_separating_lines, neg_separating_lines
@@ -381,9 +406,14 @@ double calu_points_num_inRect(std::vector<cv::Point> & pts,
                      cv::Mat & im, int type);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
- * 在separating_lines 中搜索寻找端点. 下优先， 平行时选左
- * input：车位分割线集, 二值化图
- * 返回值 ： L角点
+ * 对拟后的长线段寻找分割线端点
+ * input
+ * neg_separating_lines 待处理的分割线
+ * img_ps_mask_ipm 二值俯视图
+ * img_ps_bgr_ipm BGR俯视图 用于确定分割线的完整性
+ * output
+ * pos_separating_lines_dst 输出的包含终端信息的分割线
+ * L_point 以角点的形式输出
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int find_separating_line_end_point(std::vector<cv::Vec6f> & pos_separating_lines,
                    cv::Mat & img_ps_mask_ipm,
